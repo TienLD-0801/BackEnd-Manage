@@ -12,11 +12,8 @@ export class CategoriesEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  categoryName: string;
-
-  @Column()
-  description: string;
+  @Column({ unique: true })
+  productCategory: string;
 
   @OneToMany(() => ProductEntity, (product) => product.category)
   products: ProductEntity[];

@@ -1,12 +1,18 @@
-import { MinLength, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, MaxLength } from 'class-validator';
 
 export class ProductDto {
-  @IsNotEmpty()
-  categoryId?: number;
+  @IsNotEmpty({ message: 'product name is not empty' })
+  productName: string;
 
-  @MinLength(1, { message: 'This field must be than 1 character Nine Dev!' })
-  productName?: string;
+  @IsNotEmpty({ message: 'product type is not empty' })
+  productType: string;
 
-  @IsNotEmpty()
-  price?: number;
+  @IsNotEmpty({ message: 'url is not empty' })
+  urlImg: string;
+
+  @MaxLength(80, { message: 'Description the length invalid' })
+  description?: string;
+
+  @IsNotEmpty({ message: 'price  is not empty' })
+  price: number;
 }

@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Res,
   Param,
   Post,
   Body,
@@ -11,104 +10,43 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { Response } from 'express';
-import { ResponseData } from '../../global/globalClass';
-import { HttpMessage } from '../../global/globalEnum';
 import { CategoryService } from './category.service';
 import { CategoryDto } from './dto/category.dto';
-import { Category } from '.../../models/category.model';
+import {
+  CategoryResponse,
+  CreateCategoryResponse,
+} from '../../shared/types/response.type';
 
-@Controller('categories')
+@Controller()
 export class CategoryController {
   constructor(private categoryService: CategoryService) {}
 
-  @Get()
+  @Get('api/categories')
   @HttpCode(HttpStatus.OK)
-  async list(@Res() res: Response): Promise<any> {
-    try {
-      return res.json(
-        new ResponseData(
-          await this.categoryService.findAll(),
-          HttpStatus.OK,
-          HttpMessage.SUCCESS,
-        ),
-      );
-    } catch (error) {
-      return res.json(new ResponseData(null, HttpStatus.OK, HttpMessage.ERROR));
-    }
+  getAllCategory(): Promise<CategoryResponse> {
+    return this.categoryService.getAllCategory();
   }
 
-  @Get('/:id')
+  @Post('api/create-category')
   @HttpCode(HttpStatus.OK)
-  async detail(@Param('id') id: number, @Res() res: Response): Promise<any> {
-    try {
-      return res.json(
-        new ResponseData(
-          await this.categoryService.findById(id),
-          HttpStatus.OK,
-          HttpMessage.SUCCESS,
-        ),
-      );
-    } catch (error) {
-      return res.json(new ResponseData(null, HttpStatus.OK, HttpMessage.ERROR));
-    }
+  createCategory(
+    @Body(new ValidationPipe()) params: CategoryDto,
+  ): Promise<CreateCategoryResponse> {
+    return this.categoryService.createCategory(params);
   }
 
-  @Post()
+  @Put('api/update-category/:id')
   @HttpCode(HttpStatus.OK)
-  async create(
-    @Body(new ValidationPipe()) category: CategoryDto,
-    @Res() res: Response,
-  ): Promise<any> {
-    try {
-      return res.json(
-        new ResponseData(
-          await this.categoryService.create(category),
-          HttpStatus.OK,
-          HttpMessage.SUCCESS,
-        ),
-      );
-    } catch (error) {
-      return res.json(new ResponseData(null, HttpStatus.OK, HttpMessage.ERROR));
-    }
-  }
-
-  @Put('/:id')
-  @HttpCode(HttpStatus.OK)
-  async update(
+  updateCategory(
     @Param('id') id: number,
-    @Body(new ValidationPipe()) category: CategoryDto,
-    @Res() res: Response,
+    @Body(new ValidationPipe()) params: CategoryDto,
   ): Promise<any> {
-    try {
-      return res.json(
-        new ResponseData(
-          await this.categoryService.update(id, category),
-          HttpStatus.OK,
-          HttpMessage.SUCCESS,
-        ),
-      );
-    } catch (error) {
-      return res.json(new ResponseData(null, HttpStatus.OK, HttpMessage.ERROR));
-    }
+    return this.categoryService.updateCategory(id, params);
   }
 
-  @Delete('/:id')
+  @Delete('api/delete-category/:id')
   @HttpCode(HttpStatus.OK)
-  async delete(@Param('id') id: number, @Res() res: Response): Promise<any> {
-    try {
-      const isFlag: boolean = await this.categoryService.delete(id);
-      if (isFlag) {
-        return res.json(
-          new ResponseData(isFlag, HttpStatus.OK, HttpMessage.SUCCESS),
-        );
-      } else {
-        return res.json(
-          new ResponseData(isFlag, HttpStatus.OK, HttpMessage.ERROR),
-        );
-      }
-    } catch (error) {
-      return res.json(new ResponseData(null, HttpStatus.OK, HttpMessage.ERROR));
-    }
+  deleteCategory(@Param('id') id: number): Promise<any> {
+    return this.categoryService.deleteCategory(id);
   }
 }

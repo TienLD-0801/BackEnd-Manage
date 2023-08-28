@@ -17,18 +17,18 @@ export class ProductEntity extends BaseEntity {
   productName: string;
 
   @Column()
-  price: number;
+  categoryId: string;
 
   @Column()
-  categoryId: number;
+  price: number;
 
   @Column()
   urlImg: string;
 
-  @Column()
-  nameImg: string;
-
   @ManyToOne(() => CategoriesEntity, (category) => category.products)
-  @JoinColumn({ name: 'categoryId', referencedColumnName: 'id' })
+  @JoinColumn({
+    name: 'categoryId',
+    referencedColumnName: 'id',
+  })
   category: CategoriesEntity;
 }
