@@ -16,11 +16,11 @@ dotenv.config();
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: parseInt(process.env.DB_PORT),
-      username: 'root',
-      password: process.env.DB_PASSWORD,
-      database: 'ohayo_community',
+      host: process.env.RDS_HOST,
+      port: Number(process.env.RDS_PORT),
+      username: process.env.RDS_USERNAME,
+      password: process.env.RDS_PASSWORD,
+      database: process.env.RDS_DATABASE,
       entities: [CategoriesEntity, UserEntity, ProductEntity, OrderCutEntity],
       synchronize: false,
     }),

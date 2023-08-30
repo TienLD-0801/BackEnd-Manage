@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoriesEntity } from '../../entities/categories.entity';
-import { Category } from '../../models/category.model';
 import { Repository } from 'typeorm';
 import { CategoryDto } from './dto/category.dto';
 import {
@@ -16,9 +15,9 @@ export class CategoryService {
     private readonly categoryRepository: Repository<CategoriesEntity>,
   ) {}
 
-  async findById(id: number): Promise<Category> {
-    return await this.categoryRepository.findOne({ where: { id } });
-  }
+  // async findById(id: number): Promise<Category> {
+  //   return await this.categoryRepository.findOne({ where: { id } });
+  // }
 
   // async create(category: Category): Promise<Category> {
   //   return await this.categoryRepository.save(category);

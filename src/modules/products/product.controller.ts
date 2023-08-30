@@ -22,7 +22,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import {
   CreateProductResponse,
   ProductResponse,
-} from 'shared/types/response.type';
+} from '../../shared/types/response.type';
 
 @Controller()
 export class ProductController {

@@ -10,7 +10,7 @@ import { Repository } from 'typeorm';
 import {
   CreateProductResponse,
   ProductResponse,
-} from 'shared/types/response.type';
+} from '../../shared/types/response.type';
 import { ProductDto } from './dto/product.dto';
 import { ImageService } from './image-upload.service';
 

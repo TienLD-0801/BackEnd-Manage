@@ -1,0 +1,52 @@
+version: '3.4'
+
+services:
+  mysql-db:
+    build: ./docker/mysql/
+    image: mysql-image-1
+    platform: linux/x86_64
+    env_file: ./.env
+    environment:
+      MYSQL_ROOT_PASSWORD: admin@123
+      MYSQL_DATABASE: $RDS_DATABASE
+      MYSQL_USER: $RDS_USERNAME
+      MYSQL_PASSWORD: $RDS_PASSWORD
+      MYSQL_TCP_PORT: $RDS_PORT
+    ports:
+      - $RDS_PORT:$RDS_PORT
+    command: mysqld --innodb_use_native_aio=0
+    networks:
+    - nw_template_rest
+
+  backend:
+    image: image-backend
+    env_file: ./.env
+    build:
+      context: .
+    environment:
+      APP_PORT: $APP_PORT
+      RDS_USERNAME: $RDS_USERNAME
+      RDS_PASSWORD: $RDS_PASSWORD
+      RDS_DATABASE: $RDS_DATABASE
+      RDS_HOST: $RDS_HOST
+    ports:
+      - 3000:$APP_PORT
+    volumes:
+      - prod_dep:/prod_dep/node_modules
+      - dev_dep:/builder/app/node_modules
+      - yarn_cache:/usr/local/share/.cache/yarn
+    command: npm run start
+    networks:
+    - nw_template_rest
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+networks:
+  nw_template_rest:
+    driver: bridge
+
+volumes:
+  yarn_cache:
+  dev_dep:
+  prod_dep:
