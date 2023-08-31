@@ -4,25 +4,25 @@ import { UserModule } from './modules/auth/user.module';
 import { ProductModule } from './modules/products/product.module';
 import { OrderModule } from './modules/orderCut/order.module';
 import { CategoryModule } from './modules/categories/category.module';
-import { CategoriesEntity } from './entities/categories.entity';
+import { addTransactionalDataSource } from 'typeorm-transactional';
 import { Module } from '@nestjs/common';
-import { UserEntity } from './entities/user.entity';
-import { ProductEntity } from './entities/product.entity';
-import { OrderCutEntity } from './entities/orderCut.entity';
 import dotenv from 'dotenv';
+import dbConfig from './config/db/mySql';
+
 dotenv.config();
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.RDS_HOST,
-      port: Number(process.env.RDS_PORT),
-      username: process.env.RDS_USERNAME,
-      password: process.env.RDS_PASSWORD,
-      database: process.env.RDS_DATABASE,
-      entities: [CategoriesEntity, UserEntity, ProductEntity, OrderCutEntity],
-      synchronize: false,
+    TypeOrmModule.forRootAsync({
+      useFactory() {
+        return dbConfig;
+      },
+      async dataSourceFactory(options) {
+        if (!options) {
+          throw new Error('Invalid dataSource options passed');
+        }
+        return addTransactionalDataSource(new DataSource(options));
+      },
     }),
     ProductModule,
     CategoryModule,

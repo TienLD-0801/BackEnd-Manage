@@ -5,17 +5,25 @@ import { v2 as cloudinary } from 'cloudinary';
 import './config/cloudinary.config';
 import { Logger } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
+import { initializeTransactionalContext } from 'typeorm-transactional';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  // Initialize cls-hooked
+  initializeTransactionalContext();
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: new Logger(),
+    cors: true,
+  });
+
   app.enableCors({
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204,
   });
-  app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
+  app.use(cookieParser());
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
   const apiKey = process.env.CLOUDINARY_API_KEY;
   const apiSecret = process.env.CLOUDINARY_API_SECRET;
@@ -35,6 +43,4 @@ async function bootstrap() {
   });
 }
 
-(async () => {
-  await bootstrap();
-})();
+bootstrap();
