@@ -6,10 +6,8 @@ import { OrderModule } from './modules/orderCut/order.module';
 import { CategoryModule } from './modules/categories/category.module';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { Module } from '@nestjs/common';
-import dotenv from 'dotenv';
 import dbConfig from './config/db/mySql';
-
-dotenv.config();
+import { GlobalModule } from './modules/global/global.module';
 
 @Module({
   imports: [
@@ -24,6 +22,7 @@ dotenv.config();
         return addTransactionalDataSource(new DataSource(options));
       },
     }),
+    GlobalModule,
     ProductModule,
     CategoryModule,
     UserModule,

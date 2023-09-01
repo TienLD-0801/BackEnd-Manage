@@ -35,7 +35,7 @@ COPY tsconfig.json ./
 EXPOSE 3000
 
 # Start the NestJS application
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start:prod"]
 
 ### build source BE docker images
 # docker build --tag backend-source-1.0.0 .

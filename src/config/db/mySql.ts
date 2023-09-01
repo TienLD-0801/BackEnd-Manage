@@ -2,12 +2,11 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 
-// if (process.env.NODE_ENV) {
-//   dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
-// } else {
-//   dotenv.config();
-// }
-dotenv.config();
+if (process.env.NODE_ENV) {
+  dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+} else {
+  dotenv.config();
+}
 
 const dbConfig: TypeOrmModuleOptions = {
   type: 'mysql',

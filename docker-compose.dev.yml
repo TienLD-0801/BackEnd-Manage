@@ -5,7 +5,7 @@ services:
     image: app:latest
     build:
       context: .
-      target: prod
+      target: builder
     container_name: app
     platform: linux/amd64
     env_file: .env
@@ -23,7 +23,7 @@ services:
       - dev_dep:/builder/app/node_modules
       - yarn_cache:/usr/local/share/.cache/yarn
       - prod_dep:/prod_dep/node_modules 
-    command: npm run start:prod
+    command: npm run start:dev
     networks:
       - nw_template
     depends_on:
