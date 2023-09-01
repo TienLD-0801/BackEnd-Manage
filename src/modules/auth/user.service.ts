@@ -28,7 +28,7 @@ export class UserService {
 
   // create user
   async createUser(params: RegisterDto): Promise<CreateUserResponse> {
-    const { name, email, password } = params;
+    const { name, email, password, role } = params;
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const checkEmail = await this.userRepository.findOne({
@@ -42,6 +42,7 @@ export class UserService {
       name: name,
       email: email,
       password: hashedPassword,
+      role,
     };
 
     const saveData = await this.userRepository.save(data);
