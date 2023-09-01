@@ -26,6 +26,7 @@ export class UserService {
     private jwtService: JwtService,
   ) {}
 
+  // create user
   async createUser(params: RegisterDto): Promise<CreateUserResponse> {
     const { name, email, password } = params;
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -54,6 +55,7 @@ export class UserService {
     };
   }
 
+  // login user
   async login(params: LoginDto, response: Response): Promise<LoginResponse> {
     const { email, password } = params;
     const user = await this.userRepository.findOne({ where: { email } });
@@ -78,6 +80,7 @@ export class UserService {
     };
   }
 
+  // get all users
   async getUsers(): Promise<UserResponse> {
     const users = await this.userRepository.find();
 
@@ -100,6 +103,7 @@ export class UserService {
     };
   }
 
+  // update user
   async updateUser(id: number, params: UserDto): Promise<UpdateUser> {
     const user = await this.userRepository.findOneBy({ id: id });
 
@@ -127,6 +131,7 @@ export class UserService {
     return { result: newUser, message: 'Update successfully' };
   }
 
+  // delete user
   async deleteUser(id: number): Promise<DeleteUser> {
     const user = await this.userRepository.findOneBy({ id: id });
 

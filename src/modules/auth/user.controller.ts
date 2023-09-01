@@ -40,7 +40,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(RegisterGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
-  register(@Body() params: RegisterDto): Promise<CreateUserResponse> {
+  createUser(@Body() params: RegisterDto): Promise<CreateUserResponse> {
     return this.userService.createUser(params);
   }
 
