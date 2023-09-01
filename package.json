@@ -14,6 +14,7 @@
     "start:prod": "node dist/main.js",
     "lint": "eslint '{src,apps,libs,test}/**/*.ts' --fix",
     "test": "jest",
+    "batch-user":"nest build && node dist/batch/user-batch.js ",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -21,7 +22,11 @@
     "docker-dev-up": "docker-compose -f docker-compose.dev.yml up",
     "docker-prod-up": "docker-compose -f docker-compose.yml up",
     "docker-clean-all": "docker-compose down -v && docker-compose rm -f && docker system prune --all --force",
-    "typeorm": "ts-node ./node_modules/typeorm/cli"
+    "typeorm": "ts-node ./node_modules/typeorm/cli",
+    "typeorm:run": "npm run typeorm migration:run -- -d ./typeOrm.config.ts",
+    "typeorm:generate": "npm run typeorm -- -d ./typeOrm.config.ts migration:generate ./migrations/$npm_config_name",
+    "typeorm:create": "npm run typeorm -- migration:create ./migrations/$npm_config_name",
+    "typeorm:revert": "npm run typeorm -- -d ./typeOrm.config.ts migration:revert"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.8.1",
