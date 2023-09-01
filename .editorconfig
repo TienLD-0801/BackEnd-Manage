@@ -1,0 +1,15 @@
+# editorconfig.org
+root = true
+
+[{*.ts,.js}]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+charset = utf-8
+
+[{*.md,.yml}]
+trim_trailing_whitespace = false
+indent_size = 2
+
+[*.json]
+indent_size = 2

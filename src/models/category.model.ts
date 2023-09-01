@@ -1,11 +1,9 @@
 export class Category {
   id?: number;
-  categoryName?: string;
-  description?: string;
+  productCategory?: string;
 
-  constructor({ id, categoryName, description }) {
-    if (id !== undefined) this.id = id;
-    if (categoryName !== undefined) this.categoryName = categoryName;
-    if (description !== undefined) this.description = description;
+  constructor({ id, productCategory }) {
+    if (id !== null) this.id = id;
+    if (productCategory !== null) this.productCategory = productCategory;
   }
 }

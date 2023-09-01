@@ -21,7 +21,7 @@ import { LoginDto } from './dto/login.dto';
 import {
   DeleteUser,
   LoginResponse,
-  RegisterResponse,
+  CreateUserResponse,
   UpdateUser,
   UserResponse,
 } from '../../shared/types/response.type';
@@ -40,7 +40,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(RegisterGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
-  async register(@Body() params: RegisterDto): Promise<RegisterResponse> {
+  register(@Body() params: RegisterDto): Promise<CreateUserResponse> {
     return this.userService.createUser(params);
   }
 
@@ -48,7 +48,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(LoginGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
-  async login(
+  login(
     @Body() params: LoginDto,
     @Res({ passthrough: true }) response: Response,
   ): Promise<LoginResponse> {
@@ -58,21 +58,21 @@ export class AuthController {
   @Get('api/users')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthMiddleware, UserGuard)
-  async getUsers(): Promise<UserResponse> {
+  getUsers(): Promise<UserResponse> {
     return this.userService.getUsers();
   }
 
   @Post('api/logout')
   @HttpCode(HttpStatus.OK)
   @UseGuards(UserGuard)
-  async logout(@Res({ passthrough: true }) response: Response) {
+  logout(@Res({ passthrough: true }) response: Response) {
     return this.userService.logout(response);
   }
 
   @Put('api/update-user/:id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthMiddleware)
-  async updateUser(
+  updateUser(
     @Param('id') id: number,
     @Body(new ValidationPipe()) params: UserDto,
   ): Promise<UpdateUser> {
@@ -82,7 +82,7 @@ export class AuthController {
   @Delete('api/delete-user/:id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthMiddleware)
-  async deleteUser(@Param('id') id: number): Promise<DeleteUser> {
+  deleteUser(@Param('id') id: number): Promise<DeleteUser> {
     return this.userService.deleteUser(id);
   }
 }

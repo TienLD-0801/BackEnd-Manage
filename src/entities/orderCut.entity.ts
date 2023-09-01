@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('Order')
+@Entity('order')
 export class OrderCutEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;

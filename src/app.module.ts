@@ -4,26 +4,25 @@ import { UserModule } from './modules/auth/user.module';
 import { ProductModule } from './modules/products/product.module';
 import { OrderModule } from './modules/orderCut/order.module';
 import { CategoryModule } from './modules/categories/category.module';
-import { CategoriesEntity } from './entities/categories.entity';
+import { addTransactionalDataSource } from 'typeorm-transactional';
 import { Module } from '@nestjs/common';
-import { UserEntity } from './entities/user.entity';
-import { ProductEntity } from './entities/product.entity';
-import { OrderCutEntity } from './entities/orderCut.entity';
-import dotenv from 'dotenv';
-dotenv.config();
+import dbConfig from './config/db/mySql';
+import { GlobalModule } from './modules/global/global.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: parseInt(process.env.DB_PORT),
-      username: 'root',
-      password: process.env.DB_PASSWORD,
-      database: 'ohayo_community',
-      entities: [CategoriesEntity, UserEntity, ProductEntity, OrderCutEntity],
-      synchronize: false,
+    TypeOrmModule.forRootAsync({
+      useFactory() {
+        return dbConfig;
+      },
+      async dataSourceFactory(options) {
+        if (!options) {
+          throw new Error('Invalid dataSource options passed');
+        }
+        return addTransactionalDataSource(new DataSource(options));
+      },
     }),
+    GlobalModule,
     ProductModule,
     CategoryModule,
     UserModule,

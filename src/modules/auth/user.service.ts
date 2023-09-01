@@ -13,7 +13,7 @@ import {
   DeleteUser,
   LoginResponse,
   LogoutResponse,
-  RegisterResponse,
+  CreateUserResponse,
   UpdateUser,
   UserResponse,
 } from '../../shared/types/response.type';
@@ -26,7 +26,7 @@ export class UserService {
     private jwtService: JwtService,
   ) {}
 
-  async createUser(params: RegisterDto): Promise<RegisterResponse> {
+  async createUser(params: RegisterDto): Promise<CreateUserResponse> {
     const { name, email, password } = params;
     const hashedPassword = await bcrypt.hash(password, 12);
 

@@ -7,7 +7,7 @@ export type LoginResponse = {
   token: string;
 };
 
-export type RegisterResponse = {
+export type CreateUserResponse = {
   userInfo: {
     name: string;
     email: string;
@@ -38,3 +38,25 @@ export type UpdateUser = {
 };
 
 export type DeleteUser = LogoutResponse;
+
+export type ProductResponse = {
+  result: {
+    productName?: string;
+    categoriesName?: number;
+    urlImg?: string;
+    descriptions?: string;
+    price?: number;
+  }[];
+};
+
+export type CategoryResponse = {
+  result: {
+    productCategory: string;
+  }[];
+};
+
+export type CreateProductResponse = {
+  message: string;
+};
+
+export type CreateCategoryResponse = CreateProductResponse;

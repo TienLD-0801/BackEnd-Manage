@@ -1,0 +1,62 @@
+version: '3.7'
+
+services:
+  app:
+    image: app:latest
+    build:
+      context: .
+      target: prod
+    container_name: app
+    platform: linux/amd64
+    env_file: .env
+    environment:
+      APP_PORT: $APP_PORT
+      NODE_ENV: $NODE_ENV
+      RDS_USERNAME: $RDS_USERNAME
+      RDS_PASSWORD: $RDS_PASSWORD
+      RDS_DATABASE: $RDS_DATABASE
+      RDS_HOST: $RDS_HOST
+    ports:
+      - 3000:$APP_PORT
+    volumes:
+      - ./src:/builder/app/src/
+      - dev_dep:/builder/app/node_modules
+      - yarn_cache:/usr/local/share/.cache/yarn
+      - prod_dep:/prod_dep/node_modules 
+    command: npm run start:prod
+    networks:
+      - nw_template
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: mysql:8.0
+    container_name: db
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: admin@123
+      MYSQL_DATABASE: $RDS_DATABASE
+      MYSQL_USER: $RDS_USERNAME
+      MYSQL_PASSWORD: $RDS_PASSWORD
+      MYSQL_TCP_PORT: $RDS_PORT
+    ports:
+      - $RDS_PORT:$RDS_PORT
+    networks:
+      - nw_template
+
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - 6379:6379
+    networks:
+      - nw_template
+networks:
+  nw_template:
+    driver: bridge
+
+volumes:
+  yarn_cache:
+  dev_dep:
+  prod_dep:
