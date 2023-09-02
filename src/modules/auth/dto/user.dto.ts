@@ -1,7 +1,7 @@
 import { IsOptional } from 'class-validator';
-import { RegisterDto } from './register.dto';
+import { CreateUserDto } from './create_user.dto';
 
-export class UserDto extends RegisterDto {
+export class UserDto extends CreateUserDto {
   @IsOptional()
   password: string;
 }

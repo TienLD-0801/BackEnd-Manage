@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RegisterDto } from './dto/register.dto';
+import { CreateUserDto } from './dto/create_user.dto';
 import { UserDto } from './dto/user.dto';
 import { LoginDto } from './dto/login.dto';
 import { UserEntity } from '../../entities/user.entity';
@@ -25,24 +25,59 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
     private jwtService: JwtService,
   ) {}
+  // check duplicate create and update
+  async checkDuplicate(params: UserDto, id?: number) {
+    const { email, card_id, phone } = params;
+    const queryBuilder = this.userRepository.createQueryBuilder('user');
+    let duplicateUser = null;
+
+    if (id) {
+      duplicateUser = await queryBuilder
+        .where('user.id != :id', { id })
+        .andWhere(
+          '(user.email = :email OR user.card_id = :card_id OR user.phone = :phone)',
+          { email, card_id, phone },
+        )
+        .getOne();
+    } else {
+      duplicateUser = await queryBuilder
+        .where(
+          '(user.email = :email OR user.card_id = :card_id OR user.phone = :phone)',
+          { email, card_id, phone },
+        )
+        .getOne();
+    }
+
+    if (duplicateUser) {
+      let duplicateField = '';
+      if (duplicateUser.email === email) {
+        duplicateField = 'Email';
+      } else if (duplicateUser.card_id === card_id) {
+        duplicateField = 'Card ID';
+      } else if (duplicateUser.phone === phone) {
+        duplicateField = 'Phone';
+      }
+
+      throw new BadRequestException(`${duplicateField} already exists!`);
+    }
+  }
 
   // create user
-  async createUser(params: RegisterDto): Promise<CreateUserResponse> {
-    const { name, email, password, role } = params;
+  async createUser(params: CreateUserDto): Promise<CreateUserResponse> {
+    const { name, email, password, age, card_id, phone } = params;
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    const checkEmail = await this.userRepository.findOne({
-      where: { email: email },
-    });
+    // check duplicate field
+    await this.checkDuplicate(params);
 
-    if (checkEmail) {
-      throw new BadRequestException(`Email already exists !`);
-    }
     const data = {
       name: name,
       email: email,
       password: hashedPassword,
-      role,
+      age: age,
+      card_id: card_id,
+      phone: phone,
+      role: 1,
     };
 
     const saveData = await this.userRepository.save(data);
@@ -51,8 +86,12 @@ export class UserService {
       userInfo: {
         name: saveData.name,
         email: saveData.email,
+        age: saveData.age,
+        card_id: saveData.card_id,
+        phone: saveData.phone,
+        role: 1,
       },
-      message: `${saveData.name} register successfully`,
+      message: `User ${saveData.name} register successfully`,
     };
   }
 
@@ -68,7 +107,22 @@ export class UserService {
     if (!(await bcrypt.compare(password, user.password))) {
       throw new BadRequestException('Invalid password');
     }
-    const jwt = await this.jwtService.signAsync({ id: user.id });
+    const jwt = await this.jwtService.signAsync(
+      { id: user.id },
+      {
+        secret: 'secret',
+        expiresIn: '1d',
+      },
+    );
+
+    const refreshJwt = await this.jwtService.signAsync(
+      { id: user.id },
+      {
+        secret: 'secret',
+        expiresIn: '7s',
+      },
+    );
+
     response.cookie(JWT, jwt, { httpOnly: true });
 
     return {
@@ -78,6 +132,7 @@ export class UserService {
         role: user.role,
       },
       token: jwt,
+      refreshToken: refreshJwt,
     };
   }
 
@@ -90,6 +145,9 @@ export class UserService {
         id: user.id,
         name: user.name,
         email: user.email,
+        age: user.age,
+        card_id: user.card_id,
+        phone: user.phone,
         role: user.role,
       };
     });
@@ -112,6 +170,9 @@ export class UserService {
       throw new BadRequestException(`Can't find user with id : ${id}`);
     }
 
+    // check duplicate field
+    await this.checkDuplicate(params, id);
+
     if (params.role) {
       if (params.role !== ROLE.Admin && params.role !== ROLE.Staff) {
         throw new BadRequestException('Role already exits !');
@@ -126,6 +187,9 @@ export class UserService {
     const newUser = {
       name: params.name,
       email: params.email,
+      age: params.age,
+      card_id: params.card_id,
+      phone: params.phone,
       role: params.role,
     };
 

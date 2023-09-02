@@ -40,6 +40,7 @@ services:
       MYSQL_USER: $RDS_USERNAME
       MYSQL_PASSWORD: $RDS_PASSWORD
       MYSQL_TCP_PORT: $RDS_PORT
+      TZ: Asia/Ho_Chi_Minh
     ports:
       - $RDS_PORT:$RDS_PORT
     networks:

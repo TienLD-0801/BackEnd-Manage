@@ -12,6 +12,9 @@ async function bootstrap() {
       name: `admin${i}`,
       email: `admin${i}@example.com`,
       password: '123456',
+      age: 20,
+      card_id: `2312562${i}`,
+      phone: `03294126${i}`,
       role: 0,
     };
     await userService.createUser(user);

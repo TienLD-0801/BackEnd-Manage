@@ -1,6 +1,9 @@
 # Use the official Node.js 18 image as the base image
 FROM node:18 AS builder
 
+ENV TZ=Asia/Ho_Chi_Minh
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ /etc/timezone
+
 # Set the working directory in the container to /backend-manage
 WORKDIR /backend-manage
 
@@ -19,6 +22,9 @@ RUN npm run build
 
 # Use a lightweight Node.js 18 image as the base image
 FROM node:18-alpine
+
+ENV TZ=Asia/Ho_Chi_Minh
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ /etc/timezone
 
 # Set the working directory in the container to /backend-manage
 WORKDIR  /backend-manage
