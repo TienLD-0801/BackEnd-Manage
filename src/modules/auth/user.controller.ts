@@ -16,7 +16,7 @@ import {
 import { Response } from 'express';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
-import { RegisterDto } from './dto/register.dto';
+import { CreateUserDto } from './dto/create_user.dto';
 import { LoginDto } from './dto/login.dto';
 import {
   DeleteUser,
@@ -40,7 +40,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(RegisterGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
-  createUser(@Body() params: RegisterDto): Promise<CreateUserResponse> {
+  createUser(@Body() params: CreateUserDto): Promise<CreateUserResponse> {
     return this.userService.createUser(params);
   }
 

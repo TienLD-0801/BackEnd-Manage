@@ -5,12 +5,17 @@ export type LoginResponse = {
     role: number;
   };
   token: string;
+  refreshToken: string;
 };
 
 export type CreateUserResponse = {
   userInfo: {
     name: string;
     email: string;
+    age: number;
+    card_id: string;
+    phone: string;
+    role: number;
   };
   message: string;
 };
@@ -20,7 +25,12 @@ export type UserResponse = {
     id: number;
     name: string;
     email: string;
+    age: number;
+    card_id: string;
+    phone: string;
     role: number;
+    create_ad: Date;
+    updated_at: Date;
   }[];
 };
 
