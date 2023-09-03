@@ -149,6 +149,8 @@ export class UserService {
         card_id: user.card_id,
         phone: user.phone,
         role: user.role,
+        create_ad: user.created_at,
+        updated_at: user.updated_at,
       };
     });
 

@@ -29,6 +29,8 @@ export type UserResponse = {
     card_id: string;
     phone: string;
     role: number;
+    create_ad: Date;
+    updated_at: Date;
   }[];
 };
 
