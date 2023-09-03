@@ -32,10 +32,17 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'Name is not empty !' })
   name: string;
 
-  @MaxLength(50, { message: 'The length of name invalid !' })
+  @MaxLength(50, { message: 'The length of email invalid !' })
   @IsEmail()
   @IsNotEmpty({ message: 'Email is not empty !' })
   email: string;
+
+  @Length(8, 8, {
+    message: 'Password must be either 8 characters long !',
+  })
+  @IsString()
+  @IsNotEmpty({ message: 'Password is not empty !' })
+  password: string;
 
   @Min(18, { message: 'Age must be at least 18 !' })
   @Max(60, { message: 'Age must be at most 60 !' })
@@ -50,10 +57,6 @@ export class CreateUserDto {
   @IsString()
   @IsPhoneNumber('VN', { message: 'Invalid phone number or is not empty !' })
   phone: string;
-
-  @IsString()
-  @IsNotEmpty({ message: 'Password is not empty !' })
-  password: string;
 
   @IsIn([0, 1], { message: 'Role must be either 0 or 1 !' })
   @IsOptional()
