@@ -64,7 +64,7 @@ export class UserService {
 
   // create user
   async createUser(params: CreateUserDto): Promise<CreateUserResponse> {
-    const { name, email, password, age, card_id, phone } = params;
+    const { name, email, password, age, card_id, phone, role } = params;
     const hashedPassword = await bcrypt.hash(password, 12);
 
     // check duplicate field
@@ -77,7 +77,7 @@ export class UserService {
       age: age,
       card_id: card_id,
       phone: phone,
-      role: 1,
+      role: role !== undefined ? role : 1,
     };
 
     const saveData = await this.userRepository.save(data);
@@ -89,7 +89,7 @@ export class UserService {
         age: saveData.age,
         card_id: saveData.card_id,
         phone: saveData.phone,
-        role: 1,
+        role: role !== undefined ? role : 1,
       },
       message: `User ${saveData.name} register successfully`,
     };
