@@ -12,7 +12,7 @@ async function bootstrap() {
       name: `admin${i}`,
       email: `admin${i}@example.com`,
       password: '123456789',
-      age: 20,
+      date_of_birth: '2000-01-08',
       card_id: `23125622${i}`,
       phone: `03294126${i}`,
       role: 0,

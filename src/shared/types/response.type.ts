@@ -12,7 +12,7 @@ export type CreateUserResponse = {
   userInfo: {
     name: string;
     email: string;
-    age: number;
+    date_of_birth: Date;
     card_id: string;
     phone: string;
     role: number;
@@ -25,7 +25,7 @@ export type UserResponse = {
     id: number;
     name: string;
     email: string;
-    age: number;
+    date_of_birth: Date;
     card_id: string;
     phone: string;
     role: number;
@@ -42,6 +42,9 @@ export type UpdateUser = {
   result: {
     name: string;
     email: string;
+    date_of_birth: Date;
+    card_id: string;
+    phone: string;
     role: number;
   };
   message: string;

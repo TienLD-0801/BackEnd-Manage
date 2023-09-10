@@ -20,8 +20,8 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column({ default: 18 })
-  age: number;
+  @Column()
+  date_of_birth: Date;
 
   @Column({ unique: true })
   card_id: string;

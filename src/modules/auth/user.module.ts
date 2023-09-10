@@ -29,6 +29,7 @@ export class UserModule implements NestModule {
       .forRoutes(
         { path: 'api/users', method: RequestMethod.GET },
         { path: 'api/logout', method: RequestMethod.POST },
+        { path: 'api/create-user', method: RequestMethod.POST },
         { path: 'api/update-user/:id', method: RequestMethod.PUT },
         { path: 'api/delete-user/:id', method: RequestMethod.DELETE },
       );
