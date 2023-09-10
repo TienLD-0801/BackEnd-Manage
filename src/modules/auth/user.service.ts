@@ -64,8 +64,10 @@ export class UserService {
 
   // create user
   async createUser(params: CreateUserDto): Promise<CreateUserResponse> {
-    const { name, email, password, age, card_id, phone, role } = params;
+    const { name, email, password, date_of_birth, card_id, phone, role } =
+      params;
     const hashedPassword = await bcrypt.hash(password, 12);
+    const newDateOfBirth = new Date(date_of_birth);
 
     // check duplicate field
     await this.checkDuplicate(params);
@@ -74,7 +76,7 @@ export class UserService {
       name: name,
       email: email,
       password: hashedPassword,
-      age: age,
+      date_of_birth: newDateOfBirth,
       card_id: card_id,
       phone: phone,
       role: role !== undefined ? role : 1,
@@ -86,7 +88,7 @@ export class UserService {
       userInfo: {
         name: saveData.name,
         email: saveData.email,
-        age: saveData.age,
+        date_of_birth: saveData.date_of_birth,
         card_id: saveData.card_id,
         phone: saveData.phone,
         role: role !== undefined ? role : 1,
@@ -145,7 +147,7 @@ export class UserService {
         id: user.id,
         name: user.name,
         email: user.email,
-        age: user.age,
+        date_of_birth: user.date_of_birth,
         card_id: user.card_id,
         phone: user.phone,
         role: user.role,
@@ -167,6 +169,7 @@ export class UserService {
   // update user
   async updateUser(id: number, params: UserDto): Promise<UpdateUser> {
     const user = await this.userRepository.findOneBy({ id: id });
+    const newDateOfBirth = new Date(params.date_of_birth);
 
     if (!user) {
       throw new BadRequestException(`Can't find user with id : ${id}`);
@@ -189,7 +192,7 @@ export class UserService {
     const newUser = {
       name: params.name,
       email: params.email,
-      age: params.age,
+      date_of_birth: newDateOfBirth,
       card_id: params.card_id,
       phone: params.phone,
       role: params.role,

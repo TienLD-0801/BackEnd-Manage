@@ -1,15 +1,12 @@
 import {
   IsEmail,
   IsIn,
-  IsInt,
   IsNotEmpty,
   IsOptional,
   IsPhoneNumber,
   IsString,
   Length,
-  Max,
   MaxLength,
-  Min,
   Validate,
   ValidatorConstraint,
   ValidatorConstraintInterface,
@@ -44,10 +41,8 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'Password is not empty !' })
   password: string;
 
-  @Min(18, { message: 'Age must be at least 18 !' })
-  @Max(60, { message: 'Age must be at most 60 !' })
-  @IsInt()
-  age: number;
+  @IsNotEmpty({ message: 'Date is not empty !' })
+  date_of_birth: string;
 
   @Validate(IsValidLengthConstraint)
   @IsString()
