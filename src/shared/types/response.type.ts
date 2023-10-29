@@ -55,16 +55,20 @@ export type DeleteUser = LogoutResponse;
 export type ProductResponse = {
   result: {
     productName?: string;
-    categoriesName?: number;
-    urlImg?: string;
+    categoriesName?: string;
     descriptions?: string;
+    url?: string;
     price?: number;
+    created_at: Date;
+    updated_at: Date;
   }[];
 };
 
 export type CategoryResponse = {
   result: {
     productCategory: string;
+    created_at: Date;
+    updated_at: Date;
   }[];
 };
 
@@ -73,3 +77,9 @@ export type CreateProductResponse = {
 };
 
 export type CreateCategoryResponse = CreateProductResponse;
+
+export type DeleteCategory = {
+  message: string;
+};
+
+export type DeleteProduct = DeleteCategory;

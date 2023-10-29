@@ -6,32 +6,18 @@ import { CategoryDto } from './dto/category.dto';
 import {
   CategoryResponse,
   CreateCategoryResponse,
+  DeleteCategory,
 } from '../../shared/types/response.type';
+import { ProductEntity } from '../../entities/product.entity';
 
 @Injectable()
 export class CategoryService {
   constructor(
     @InjectRepository(CategoriesEntity)
     private readonly categoryRepository: Repository<CategoriesEntity>,
+    @InjectRepository(ProductEntity)
+    private readonly productRepository: Repository<ProductEntity>,
   ) {}
-
-  // async findById(id: number): Promise<Category> {
-  //   return await this.categoryRepository.findOne({ where: { id } });
-  // }
-
-  // async create(category: Category): Promise<Category> {
-  //   return await this.categoryRepository.save(category);
-  // }
-
-  // async update(id: number, category: Category): Promise<Category> {
-  //   await this.categoryRepository.update(id, category);
-  //   return this.findById(id);
-  // }
-
-  // async delete(id: number): Promise<boolean> {
-  //   const isFlag: DeleteResult = await this.categoryRepository.delete(id);
-  //   return isFlag.affected === 1;
-  // }
 
   async getAllCategory(): Promise<CategoryResponse> {
     const categories = await this.categoryRepository.find();
@@ -39,7 +25,9 @@ export class CategoryService {
     const categoriesResponse = categories.map((category) => {
       return {
         id: category.id,
-        productCategory: category.productCategory,
+        productCategory: category.productCategoryName,
+        created_at: category.created_at,
+        updated_at: category.updated_at,
       };
     });
 
@@ -47,10 +35,10 @@ export class CategoryService {
   }
 
   async createCategory(params: CategoryDto): Promise<CreateCategoryResponse> {
-    const { productCategory } = params;
+    const { productCategoryName } = params;
 
     const checkProductCategory = await this.categoryRepository.findOne({
-      where: { productCategory: productCategory },
+      where: { productCategoryName: productCategoryName },
     });
 
     if (checkProductCategory) {
@@ -64,7 +52,7 @@ export class CategoryService {
     const saveData = await this.categoryRepository.save(dataCategory);
 
     return {
-      message: `Create ${saveData.productCategory} category successfully`,
+      message: `Create ${saveData.productCategoryName} category successfully`,
     };
   }
 
@@ -72,7 +60,33 @@ export class CategoryService {
     return;
   }
 
-  async deleteCategory(id: number) {
-    return;
+  async deleteCategory(categoriesId: number): Promise<DeleteCategory> {
+    const category = await this.categoryRepository.findOneBy({
+      id: categoriesId,
+    });
+
+    const productsWithCategory = await this.productRepository.find({
+      where: {
+        categoryId: categoriesId,
+      },
+    });
+
+    if (!category) {
+      throw new BadRequestException(
+        `Can't find category with ID ${categoriesId}`,
+      );
+    }
+
+    if (productsWithCategory.length > 0) {
+      throw new BadRequestException(
+        `Categories cannot be deleted when there are products in use`,
+      );
+    }
+
+    await this.categoryRepository.remove(category);
+
+    return {
+      message: `Category ${category.productCategoryName} delete successfully`,
+    };
   }
 }

@@ -8,6 +8,7 @@ import { addTransactionalDataSource } from 'typeorm-transactional';
 import { Module } from '@nestjs/common';
 import dbConfig from './config/db/mySql';
 import { GlobalModule } from './modules/global/global.module';
+import { UploadModule } from './modules/upload/upload.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { GlobalModule } from './modules/global/global.module';
     CategoryModule,
     UserModule,
     OrderModule,
+    UploadModule,
   ],
   controllers: [],
   providers: [],

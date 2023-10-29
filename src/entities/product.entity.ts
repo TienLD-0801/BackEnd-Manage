@@ -5,6 +5,8 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { CategoriesEntity } from './categories.entity';
 
@@ -17,13 +19,19 @@ export class ProductEntity extends BaseEntity {
   productName: string;
 
   @Column()
-  categoryId: string;
+  categoryId: number;
 
   @Column()
   price: number;
 
+  @Column({ default: '' })
+  url: string;
+
+  @Column({ default: '' })
+  url_id: string;
+
   @Column()
-  urlImg: string;
+  description: string;
 
   @ManyToOne(() => CategoriesEntity, (category) => category.products)
   @JoinColumn({
@@ -31,4 +39,10 @@ export class ProductEntity extends BaseEntity {
     referencedColumnName: 'id',
   })
   category: CategoriesEntity;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

@@ -1,67 +1,86 @@
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { ProductEntity } from '../../entities/product.entity';
+import { ProductDto } from './dto/product.dto';
 import { Product } from '../../models/product.model';
-import { Repository } from 'typeorm';
+import { ProductEntity } from '../../entities/product.entity';
+import { CategoriesEntity } from '../../entities/categories.entity';
 import {
   CreateProductResponse,
+  DeleteProduct,
   ProductResponse,
 } from '../../shared/types/response.type';
-import { ProductDto } from './dto/product.dto';
-import { ImageService } from './image-upload.service';
-
-import _ from 'lodash';
-// import { v2 as cloudinary } from 'cloudinary';
+import { UploadService } from '../upload/upload.service';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
-    private readonly imgService: ImageService,
+    @InjectRepository(CategoriesEntity)
+    private readonly categoriesRepository: Repository<CategoriesEntity>,
+    private uploadService: UploadService,
   ) {}
 
   // get all product
   async getAllProduct(): Promise<ProductResponse> {
-    const products = await this.productRepository.find();
+    const queryBuilder = this.productRepository.createQueryBuilder('product');
+    const dataProduct = await queryBuilder
+      .select([
+        'product.id AS id',
+        'product.productName AS productName',
+        'categories.productCategoryName As categoryName',
+        'product.description AS description',
+        'product.url_id AS url_id',
+        'product.url AS url',
+        'product.price AS price',
+        'product.created_at AS create_at',
+        'product.updated_at AS update_at',
+      ])
+      .innerJoin(
+        CategoriesEntity,
+        'categories',
+        'product.categoryid = categories.id',
+      )
+      .getRawMany();
 
-    const categoryIds = _.map(products, 'id');
-    console.log('id la gi ', categoryIds);
-
-    // const categories = await this.categoriesRepository.findOne({
-    //   where: categoryIds,
-    // });
-    // const categoryMap = _.keyBy(categories, 'id');
-
-    // const productsWithCategories = _.map(products, (product) => ({
-    //   ...product,
-    //   categoryName: _.get(
-    //     categoryMap,
-    //     [product.categoryId, 'categoryName'],
-    //     null,
-    //   ),
-    // }));
-
-    return { result: [] };
+    return { result: dataProduct };
   }
 
   async createProduct(
-    productDto: ProductDto,
-    file: Express.Multer.File,
+    params: ProductDto,
+    fileImage: Express.Multer.File,
   ): Promise<CreateProductResponse> {
-    // if (!file) {
-    //   throw new BadRequestException(`${file} could not be found`);
-    // }
+    const { categoryName, productName } = params;
 
-    // const url = await cloudinary.uploader.upload(file.path);
+    const isProductName = await this.productRepository.findOne({
+      where: { productName },
+    });
+    const category = await this.categoriesRepository.findOneBy({
+      productCategoryName: categoryName,
+    });
 
-    // data product
+    if (!category) {
+      throw new BadRequestException(
+        `No category found with ID ${categoryName}`,
+      );
+    }
+
+    if (isProductName) {
+      throw new BadRequestException(` ${productName} already exists!`);
+    }
+
+    const imageResult = await this.uploadService.uploadImage(fileImage);
+
     const dataProduct = {
-      ...productDto,
+      ...params,
+      categoryId: category.id,
+      url_id: imageResult.public_id,
+      url: imageResult.url,
     };
 
     await this.productRepository.save(dataProduct);
@@ -69,16 +88,20 @@ export class ProductService {
     return { message: 'Create product successfully' };
   }
 
-  async deleteProduct(productId: number): Promise<void> {
+  async deleteProduct(productId: number): Promise<DeleteProduct> {
     const product = await this.productRepository.findOneBy({
       id: productId,
     });
+
     if (!product) {
-      throw new NotFoundException(
-        `Không tìm thấy sản phẩm với ID ${productId}`,
-      );
+      throw new BadRequestException(`No products found with ID ${productId}`);
     }
+    await this.uploadService.deleteImage(product.url_id);
     await this.productRepository.delete(productId);
+
+    return {
+      message: `Delete product with Name ${product.productName} successfully`,
+    };
   }
 
   async updateProduct(
