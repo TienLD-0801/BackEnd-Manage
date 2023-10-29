@@ -139,7 +139,7 @@ export class UserService {
   }
 
   // get all users
-  async getUsers(): Promise<UserResponse> {
+  async getAllUsers(): Promise<UserResponse> {
     const users = await this.userRepository.find();
 
     const userResponses = users.map((user) => {

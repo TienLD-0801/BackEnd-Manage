@@ -4,6 +4,8 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { ProductEntity } from './product.entity';
 
@@ -13,8 +15,14 @@ export class CategoriesEntity extends BaseEntity {
   id: number;
 
   @Column({ unique: true })
-  productCategory: string;
+  productCategoryName: string;
 
   @OneToMany(() => ProductEntity, (product) => product.category)
   products: ProductEntity[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

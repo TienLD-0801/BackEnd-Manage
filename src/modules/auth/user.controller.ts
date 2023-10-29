@@ -58,8 +58,8 @@ export class AuthController {
   @Get('api/users')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthMiddleware, UserGuard)
-  getUsers(): Promise<UserResponse> {
-    return this.userService.getUsers();
+  getAllUsers(): Promise<UserResponse> {
+    return this.userService.getAllUsers();
   }
 
   @Post('api/logout')

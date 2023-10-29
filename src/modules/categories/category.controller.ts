@@ -15,6 +15,7 @@ import { CategoryDto } from './dto/category.dto';
 import {
   CategoryResponse,
   CreateCategoryResponse,
+  DeleteCategory,
 } from '../../shared/types/response.type';
 
 @Controller()
@@ -46,7 +47,7 @@ export class CategoryController {
 
   @Delete('api/delete-category/:id')
   @HttpCode(HttpStatus.OK)
-  deleteCategory(@Param('id') id: number): Promise<any> {
-    return this.categoryService.deleteCategory(id);
+  deleteCategory(@Param('id') categoryId: number): Promise<DeleteCategory> {
+    return this.categoryService.deleteCategory(categoryId);
   }
 }
