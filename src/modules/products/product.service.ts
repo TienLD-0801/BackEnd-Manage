@@ -33,7 +33,7 @@ export class ProductService {
       .select([
         'product.id AS id',
         'product.productName AS productName',
-        'categories.productCategoryName As categoryName',
+        'categories.categoryName As categoryName',
         'product.description AS description',
         'product.url_id AS url_id',
         'product.url AS url',
@@ -61,7 +61,7 @@ export class ProductService {
       where: { productName },
     });
     const category = await this.categoriesRepository.findOneBy({
-      productCategoryName: categoryName,
+      categoryName: categoryName,
     });
 
     if (!category) {

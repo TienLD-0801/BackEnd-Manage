@@ -7,6 +7,7 @@ import {
   CategoryResponse,
   CreateCategoryResponse,
   DeleteCategory,
+  UpdateCategoryResponse,
 } from '../../shared/types/response.type';
 import { ProductEntity } from '../../entities/product.entity';
 
@@ -25,7 +26,7 @@ export class CategoryService {
     const categoriesResponse = categories.map((category) => {
       return {
         id: category.id,
-        productCategory: category.productCategoryName,
+        categoryName: category.categoryName,
         created_at: category.created_at,
         updated_at: category.updated_at,
       };
@@ -35,10 +36,10 @@ export class CategoryService {
   }
 
   async createCategory(params: CategoryDto): Promise<CreateCategoryResponse> {
-    const { productCategoryName } = params;
+    const { categoryName } = params;
 
     const checkProductCategory = await this.categoryRepository.findOne({
-      where: { productCategoryName: productCategoryName },
+      where: { categoryName: categoryName },
     });
 
     if (checkProductCategory) {
@@ -52,12 +53,26 @@ export class CategoryService {
     const saveData = await this.categoryRepository.save(dataCategory);
 
     return {
-      message: `Create ${saveData.productCategoryName} category successfully`,
+      message: `Create ${saveData.categoryName} category successfully`,
     };
   }
 
-  async updateCategory(id: number, params: CategoryDto) {
-    return;
+  async updateCategory(
+    id: number,
+    params: CategoryDto,
+  ): Promise<UpdateCategoryResponse> {
+    const category = await this.categoryRepository.findOneBy({ id: id });
+
+    if (!category) {
+      throw new BadRequestException(`Can't find category with id : ${id}`);
+    }
+
+    await this.categoryRepository.save({
+      ...category,
+      ...params,
+    });
+
+    return { message: 'Update successfully' };
   }
 
   async deleteCategory(categoriesId: number): Promise<DeleteCategory> {
@@ -86,7 +101,7 @@ export class CategoryService {
     await this.categoryRepository.remove(category);
 
     return {
-      message: `Category ${category.productCategoryName} delete successfully`,
+      message: `Category ${category.categoryName} delete successfully`,
     };
   }
 }

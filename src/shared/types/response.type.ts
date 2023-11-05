@@ -66,7 +66,7 @@ export type ProductResponse = {
 
 export type CategoryResponse = {
   result: {
-    productCategory: string;
+    categoryName: string;
     created_at: Date;
     updated_at: Date;
   }[];
@@ -77,6 +77,7 @@ export type CreateProductResponse = {
 };
 
 export type CreateCategoryResponse = CreateProductResponse;
+export type UpdateCategoryResponse = CreateCategoryResponse;
 
 export type DeleteCategory = {
   message: string;

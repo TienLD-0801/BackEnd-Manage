@@ -38,7 +38,7 @@ export class ProductController {
   @UseInterceptors(
     FileInterceptor('fileImage', {
       storage: diskStorage({
-        destination: './image',
+        // destination: './image',
         filename: (_, file, cb) => {
           const name = file.originalname.split('.')[0];
           const fileExtension = file.originalname.split('.')[1];
