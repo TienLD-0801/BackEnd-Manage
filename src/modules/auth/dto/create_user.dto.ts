@@ -50,7 +50,10 @@ export class CreateUserDto {
   card_id: string;
 
   @IsString()
-  @IsPhoneNumber('VN', { message: 'Invalid phone number or is not empty !' })
+  @IsPhoneNumber('VN', {
+    message:
+      'Invalid phone number or is not empty or min 10 character or not phone number VN!',
+  })
   phone: string;
 
   @IsIn([0, 1], { message: 'Role must be either 0 or 1 !' })

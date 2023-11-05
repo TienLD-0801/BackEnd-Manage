@@ -1,10 +1,9 @@
 export class Category {
   id?: number;
-  productCategoryName?: string;
+  categoryName?: string;
 
-  constructor({ id, productCategoryName }) {
+  constructor({ id, categoryName }) {
     if (id !== null) this.id = id;
-    if (productCategoryName !== null)
-      this.productCategoryName = productCategoryName;
+    if (categoryName !== null) this.categoryName = categoryName;
   }
 }
