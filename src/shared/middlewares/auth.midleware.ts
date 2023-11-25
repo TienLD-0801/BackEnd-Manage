@@ -10,12 +10,20 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthMiddleware implements NestMiddleware {
   constructor(private jwtService: JwtService) {}
   async use(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer ', '');
     try {
+      const isBearer = req.headers['x-api-token'].includes('Bearer');
+
+      if (!isBearer) {
+        throw new Error();
+      }
+
+      const token =
+        typeof req.headers['x-api-token'] === 'string' &&
+        req.headers['x-api-token'].replace('Bearer', '').trim();
       this.jwtService.verify(token);
       next();
     } catch (_) {
-      throw new UnauthorizedException('Invalid token.');
+      throw new UnauthorizedException('Invalid token !');
     }
   }
 }
