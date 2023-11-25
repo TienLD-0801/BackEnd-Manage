@@ -6,6 +6,7 @@ import { CategoriesEntity } from '../../entities/categories.entity';
 import { AuthMiddleware } from '../../shared/middlewares/auth.midleware';
 import { JwtModule } from '@nestjs/jwt';
 import { ProductEntity } from '../../entities/product.entity';
+import { PaginationService } from '../pagination/pagination.service';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { ProductEntity } from '../../entities/product.entity';
     TypeOrmModule.forFeature([CategoriesEntity, ProductEntity]),
   ],
   controllers: [CategoryController],
-  providers: [CategoryService],
+  providers: [CategoryService, PaginationService],
 })
 export class CategoryModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {

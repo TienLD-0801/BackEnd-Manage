@@ -10,6 +10,7 @@ import { AuthController } from './user.controller';
 import { UserService } from './user.service';
 import { UserEntity } from '../../entities/user.entity';
 import { AuthMiddleware } from '../../shared/middlewares/auth.midleware';
+import { PaginationService } from '../pagination/pagination.service';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { AuthMiddleware } from '../../shared/middlewares/auth.midleware';
     }),
   ],
   controllers: [AuthController],
-  providers: [UserService],
+  providers: [UserService, PaginationService],
 })
 export class UserModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {

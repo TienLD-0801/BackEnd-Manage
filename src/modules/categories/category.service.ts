@@ -1,15 +1,18 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CategoriesEntity } from '../../entities/categories.entity';
+import _ from 'lodash';
 import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CategoryDto } from './dto/category.dto';
+import { ProductEntity } from '../../entities/product.entity';
+import { PaginationDto } from '../pagination/dto/pagination.dto';
+import { CategoriesEntity } from '../../entities/categories.entity';
+import { PaginationService } from '../pagination/pagination.service';
+import { PaginatedCategoryResponse } from '../..//shared/types/category';
 import {
-  CategoryResponse,
   CreateCategoryResponse,
   DeleteCategory,
   UpdateCategoryResponse,
 } from '../../shared/types/response.type';
-import { ProductEntity } from '../../entities/product.entity';
 
 @Injectable()
 export class CategoryService {
@@ -18,21 +21,47 @@ export class CategoryService {
     private readonly categoryRepository: Repository<CategoriesEntity>,
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
+    private readonly paginationService: PaginationService,
   ) {}
 
-  async getAllCategory(): Promise<CategoryResponse> {
-    const categories = await this.categoryRepository.find();
+  async getAllCategory(
+    params: PaginationDto,
+  ): Promise<PaginatedCategoryResponse> {
+    const product = await this.productRepository.find();
+    const categories = await this.paginationService.paginationCustom(
+      this.categoryRepository,
+      params,
+    );
 
-    const categoriesResponse = categories.map((category) => {
+    const { nextPage, previousPage } =
+      this.paginationService.calculatePagination(
+        categories.meta.currentPage,
+        categories.meta.totalPages,
+      );
+
+    const productWithCategory = _.groupBy(product, 'categoryId');
+
+    const categoriesResponse = categories.items.map((category) => {
       return {
         id: category.id,
         categoryName: category.categoryName,
+        isProductUse: !!productWithCategory[category.id],
         created_at: category.created_at,
         updated_at: category.updated_at,
       };
     });
 
-    return { result: categoriesResponse };
+    return {
+      result: {
+        items: categoriesResponse,
+        meta: {
+          ...categories.meta,
+          nextPage: nextPage,
+          previousPage: previousPage,
+        },
+        links: categories.links,
+      },
+    };
   }
 
   async createCategory(params: CategoryDto): Promise<CreateCategoryResponse> {

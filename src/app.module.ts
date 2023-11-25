@@ -9,6 +9,7 @@ import { Module } from '@nestjs/common';
 import dbConfig from './config/db/mySql';
 import { GlobalModule } from './modules/global/global.module';
 import { UploadModule } from './modules/upload/upload.module';
+import { PaginationModule } from './modules/pagination/pagination.module';
 
 @Module({
   imports: [
@@ -24,10 +25,11 @@ import { UploadModule } from './modules/upload/upload.module';
       },
     }),
     GlobalModule,
+    UserModule,
     ProductModule,
     CategoryModule,
-    UserModule,
     OrderModule,
+    PaginationModule,
     UploadModule,
   ],
   controllers: [],

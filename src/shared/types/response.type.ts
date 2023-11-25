@@ -1,3 +1,5 @@
+import { IPaginationMeta, Pagination } from 'nestjs-typeorm-paginate';
+
 export type LoginResponse = {
   userInfo: {
     name: string;
@@ -21,17 +23,19 @@ export type CreateUserResponse = {
 };
 
 export type UserResponse = {
-  result: {
-    id: number;
-    name: string;
-    email: string;
-    date_of_birth: Date;
-    card_id: string;
-    phone: string;
-    role: number;
-    create_ad: Date;
-    updated_at: Date;
-  }[];
+  id: number;
+  name: string;
+  email: string;
+  date_of_birth: Date;
+  card_id: string;
+  phone: string;
+  role: number;
+  create_ad: Date;
+  updated_at: Date;
+};
+
+export type PaginatedUserResponse = {
+  result: Pagination<UserResponse, IPaginationMeta>;
 };
 
 export type LogoutResponse = {
@@ -59,14 +63,6 @@ export type ProductResponse = {
     descriptions?: string;
     url?: string;
     price?: number;
-    created_at: Date;
-    updated_at: Date;
-  }[];
-};
-
-export type CategoryResponse = {
-  result: {
-    categoryName: string;
     created_at: Date;
     updated_at: Date;
   }[];

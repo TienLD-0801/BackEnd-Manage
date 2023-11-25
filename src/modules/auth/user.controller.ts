@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Res,
   UseGuards,
   UsePipes,
@@ -23,7 +24,7 @@ import {
   LoginResponse,
   CreateUserResponse,
   UpdateUser,
-  UserResponse,
+  PaginatedUserResponse,
 } from '../../shared/types/response.type';
 import {
   RegisterGuard,
@@ -31,23 +32,22 @@ import {
   UserGuard,
 } from '../../shared/guards/auth.guard';
 import { AuthMiddleware } from '../../shared/middlewares/auth.midleware';
+import { ApiBody, ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { API_TAG } from '../../shared/constants/constants';
+import { PaginationDto } from '../pagination/dto/pagination.dto';
 
+@ApiTags(API_TAG.user)
 @Controller()
 export class AuthController {
   constructor(private readonly userService: UserService) {}
-
-  @Post('api/create-user')
-  @HttpCode(HttpStatus.OK)
-  @UseGuards(RegisterGuard)
-  @UsePipes(new ValidationPipe({ transform: true }))
-  createUser(@Body() params: CreateUserDto): Promise<CreateUserResponse> {
-    return this.userService.createUser(params);
-  }
 
   @Post('api/login')
   @HttpCode(HttpStatus.OK)
   @UseGuards(LoginGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiBody({ type: LoginDto })
+  @ApiResponse({ status: 200, description: 'OK' })
+  @ApiResponse({ status: 404, description: 'Bad request' })
   login(
     @Body() params: LoginDto,
     @Res({ passthrough: true }) response: Response,
@@ -58,8 +58,26 @@ export class AuthController {
   @Get('api/users')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthMiddleware, UserGuard)
-  getAllUsers(): Promise<UserResponse> {
-    return this.userService.getAllUsers();
+  @ApiResponse({ status: 200, description: 'OK' })
+  @ApiResponse({ status: 404, description: 'Bad request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiHeader({
+    name: 'x-api-token',
+    required: true,
+  })
+  getAllUsers(@Query() params: PaginationDto): Promise<PaginatedUserResponse> {
+    return this.userService.getAllUsers(params);
+  }
+
+  @Post('api/create-user')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(RegisterGuard)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiResponse({ status: 200, description: 'OK' })
+  @ApiResponse({ status: 404, description: 'Bad request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  createUser(@Body() params: CreateUserDto): Promise<CreateUserResponse> {
+    return this.userService.createUser(params);
   }
 
   @Post('api/logout')
@@ -72,6 +90,9 @@ export class AuthController {
   @Put('api/update-user/:id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthMiddleware)
+  @ApiResponse({ status: 200, description: 'OK' })
+  @ApiResponse({ status: 404, description: 'Bad request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   updateUser(
     @Param('id') id: number,
     @Body(new ValidationPipe()) params: UserDto,
@@ -82,6 +103,9 @@ export class AuthController {
   @Delete('api/delete-user/:id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthMiddleware)
+  @ApiResponse({ status: 200, description: 'OK' })
+  @ApiResponse({ status: 404, description: 'Bad request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   deleteUser(@Param('id') id: number): Promise<DeleteUser> {
     return this.userService.deleteUser(id);
   }

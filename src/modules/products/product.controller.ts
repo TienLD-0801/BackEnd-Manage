@@ -9,28 +9,33 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UploadedFile,
   UseInterceptors,
   ValidationPipe,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { Product } from '../../models/product.model';
 import { ProductDto } from '../../modules/products/dto/product.dto';
 import {
   CreateProductResponse,
   DeleteProduct,
-  ProductResponse,
 } from '../../shared/types/response.type';
 import { diskStorage } from 'multer';
-
+import { ApiTags } from '@nestjs/swagger';
+import { API_TAG } from '../../shared/constants/constants';
+import { PaginationDto } from '../pagination/dto/pagination.dto';
+import { PaginatedProductResponse } from '../../shared/types/product';
+@ApiTags(API_TAG.product)
 @Controller()
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get('api/products')
   @HttpCode(HttpStatus.OK)
-  getAllProduct(): Promise<ProductResponse> {
-    return this.productService.getAllProduct();
+  getAllProduct(
+    @Query() params: PaginationDto,
+  ): Promise<PaginatedProductResponse> {
+    return this.productService.getAllProduct(params);
   }
 
   @Post('api/create-product')
@@ -66,9 +71,9 @@ export class ProductController {
   @HttpCode(HttpStatus.OK)
   updateProduct(
     @Param('id') id: number,
-    @Body() updatedProduct: Partial<Product>,
+    @Body(new ValidationPipe()) params: ProductDto,
   ): Promise<any> {
-    return this.productService.updateProduct(id, updatedProduct);
+    return this.productService.updateProduct(id, params);
   }
 
   @Delete('api/delete-product/:id')

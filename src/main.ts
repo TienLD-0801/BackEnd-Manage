@@ -5,6 +5,7 @@ import { Logger } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 import { initializeTransactionalContext } from 'typeorm-transactional';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   // Initialize cls-hooked
@@ -22,6 +23,15 @@ async function bootstrap() {
   });
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
+
+  // set up swagger
+  const config = new DocumentBuilder()
+    .setTitle('SWAGGER TEST API')
+    .setDescription('API back end manage')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   const port = process.env.APP_PORT || 3000;
   await app.listen(port, '0.0.0.0', () => {

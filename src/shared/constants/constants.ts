@@ -5,3 +5,10 @@ export { ROLE };
 export const CLOUDINARY = 'Cloudinary';
 
 export const JWT = 'jwt';
+
+export const API_TAG = {
+  global: 'default',
+  user: 'Users',
+  product: 'Products',
+  categories: 'Categories',
+};

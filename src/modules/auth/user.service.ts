@@ -15,8 +15,10 @@ import {
   LogoutResponse,
   CreateUserResponse,
   UpdateUser,
-  UserResponse,
+  PaginatedUserResponse,
 } from '../../shared/types/response.type';
+import { PaginationDto } from '../pagination/dto/pagination.dto';
+import { PaginationService } from '../pagination/pagination.service';
 
 @Injectable()
 export class UserService {
@@ -24,7 +26,9 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private jwtService: JwtService,
+    private readonly paginationService: PaginationService,
   ) {}
+
   // check duplicate create and update
   async checkDuplicate(params: UserDto, id?: number) {
     const { email, card_id, phone } = params;
@@ -139,10 +143,19 @@ export class UserService {
   }
 
   // get all users
-  async getAllUsers(): Promise<UserResponse> {
-    const users = await this.userRepository.find();
+  async getAllUsers(params: PaginationDto): Promise<PaginatedUserResponse> {
+    const users = await this.paginationService.paginationCustom(
+      this.userRepository,
+      params,
+    );
 
-    const userResponses = users.map((user) => {
+    const { nextPage, previousPage } =
+      this.paginationService.calculatePagination(
+        users.meta.currentPage,
+        users.meta.totalPages,
+      );
+
+    const userResponse = users.items.map((user) => {
       return {
         id: user.id,
         name: user.name,
@@ -156,7 +169,17 @@ export class UserService {
       };
     });
 
-    return { result: userResponses };
+    return {
+      result: {
+        items: userResponse,
+        meta: {
+          ...users.meta,
+          nextPage: nextPage,
+          previousPage: previousPage,
+        },
+        links: users.links,
+      },
+    };
   }
 
   async logout(response: Response): Promise<LogoutResponse> {

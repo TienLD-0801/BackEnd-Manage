@@ -9,23 +9,30 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CategoryDto } from './dto/category.dto';
 import {
-  CategoryResponse,
   CreateCategoryResponse,
   DeleteCategory,
 } from '../../shared/types/response.type';
+import { ApiTags } from '@nestjs/swagger';
+import { API_TAG } from '../../shared/constants/constants';
+import { PaginatedCategoryResponse } from '../../shared/types/category';
+import { PaginationDto } from '../pagination/dto/pagination.dto';
 
+@ApiTags(API_TAG.categories)
 @Controller()
 export class CategoryController {
   constructor(private categoryService: CategoryService) {}
 
   @Get('api/categories')
   @HttpCode(HttpStatus.OK)
-  getAllCategory(): Promise<CategoryResponse> {
-    return this.categoryService.getAllCategory();
+  getAllCategory(
+    @Query() params: PaginationDto,
+  ): Promise<PaginatedCategoryResponse> {
+    return this.categoryService.getAllCategory(params);
   }
 
   @Post('api/create-category')
