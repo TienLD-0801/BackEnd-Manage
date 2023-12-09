@@ -6,6 +6,10 @@ orbs:
   node: circleci/node@5.1.0
   docker: circleci/docker@2.4.0
 jobs:
+  copy-environment:
+    - run: |
+      if [ $CIRCLE_BRANCH = 'deployment-circleci' ]; then
+        cp env/jp/.env_develop .env
   build-and-push:
     environment:
       DOCKER_IMAGE: tienld0801/backend-manage
