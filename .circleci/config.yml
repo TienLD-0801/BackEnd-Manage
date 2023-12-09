@@ -6,12 +6,25 @@ orbs:
   node: circleci/node@5.1.0
   docker: circleci/docker@2.4.0
 jobs:
-  copy-environment:
-    - run:
-       name: setup copy environment
-       command: |
-          if [ $CIRCLE_BRANCH = 'deployment-circleci' ]; then
-          cp .env .env
+  env-file:
+    steps:
+      - checkout
+      - run:
+        name: .env file
+        command: |
+            echo "NODE_ENV=$NODE_ENV" > .env
+            echo "APP_PORT=$APP_PORT" >> .env
+            echo "DB_CONNECTION=$DB_CONNECTION" >> .env
+            echo "RDS_PORT=$RDS_PORT" >> .env
+            echo "RDS_USERNAME=$RDS_USERNAME" >> .env
+            echo "RDS_PASSWORD=$RDS_PASSWORD" >> .env
+            echo "RDS_DATABASE=$RDS_DATABASE" >> .env
+            echo "RDS_HOST=$RDS_HOST" >> .env
+            echo "TIMEZONE_TEXT=$TIMEZONE_TEXT" >> .env
+            echo "TIMEZONE_NUM=$TIMEZONE_NUM" >> .env
+            echo "CLOUD_NAME=$CLOUD_NAME" >> .env
+            echo "API_KEY=$API_KEY" >> .env
+            echo "API_SECRET=$API_SECRET" >> .env
   build-and-push:
     environment:
       DOCKER_IMAGE: tienld0801/backend-manage
@@ -45,11 +58,11 @@ jobs:
 workflows:
   backend-manage-pipeline:
     jobs:
-      - copy-environment 
+      - env-file
       - node/test
       - build-and-push:
           requires:
-            - copy-environment 
+            - env-file
             - node/test
           filters:
             branches:
