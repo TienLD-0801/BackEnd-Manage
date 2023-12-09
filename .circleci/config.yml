@@ -1,33 +1,49 @@
-# version circleci
+# circleci config
+# version
 version: 2.1
-# Define the jobs we want to run for this project
+# orbs
+orbs:
+  node: circleci/node@5.1.0
+  docker: circleci/docker@2.4.0
 jobs:
-  building:
-    docker:
-      - image: .circleci/node:18
+  build-and-push:
+    environment:
+      DOCKER_IMAGE: tienld0801/backend-manage
+      DOCKER_TAG: latest
+    executor: docker/docker
     steps:
+      - setup_remote_docker
       - checkout
-      - run: 
-          name: Install npm dependencies
-          command: | 
-            npm install --save
-  build_docker_image:
-    docker:
-      - image: .circleci/node:18 
-    steps: 
-      - checkout 
-      - setup_remote_docker:
-          docker_layer_caching: false
-      - run: 
-          name: Build Docker image
-          command : |
-            docker build -t backend-manage - t leduytien0801/backend-manage:latest .
-            echo $DOCKER_PASSWORD | docker login -u leduytien0801 --password-stdin
-            docker push leduytien0801/backend-manage:latest 
+      - docker/check:
+          docker-username: DOCKER_USER
+          docker-password: DOCKER_PASSWORD
+      - docker/build:
+          image: $DOCKER_IMAGE
+          tag: $DOCKER_TAG
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: $DOCKER_IMAGE
+          tag: $DOCKER_TAG
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
+  deploy:
+    executor: docker/docker
+    steps:
+      # Please add $SSH_KEY_FINGERPRINT, $DEPLOYED_USER@ and DEPLOYED_SERVER to project's environment
+      - add_ssh_keys:
+          fingerprints:
+            - $SSH_KEY_FINGERPRINT
+      - run: ssh -oStrictHostKeyChecking=no $DEPLOYED_USER@$DEPLOYED_SERVER './deploy.sh'
 
-# Orchestrate our job run sequence
 workflows:
-  build_and_deployment:
+  backend-manage-pipeline:
     jobs:
-      - building
-      - build_docker_image
+      - node/test
+      - build-and-push:
+          requires:
+            - node/test
+          filters:
+            branches:
+              only:
+                - deployment-circleci
