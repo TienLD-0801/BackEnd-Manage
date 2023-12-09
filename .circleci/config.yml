@@ -10,8 +10,8 @@ jobs:
     steps:
       - checkout
       - run:
-        name: .env file
-        command: |
+          name: .env file
+          command: |
             echo "NODE_ENV=$NODE_ENV" > .env
             echo "APP_PORT=$APP_PORT" >> .env
             echo "DB_CONNECTION=$DB_CONNECTION" >> .env
