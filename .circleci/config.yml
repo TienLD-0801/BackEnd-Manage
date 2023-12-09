@@ -35,7 +35,7 @@ jobs:
           fingerprints:
             - $SSH_KEY_FINGERPRINT
       - run: ssh -oStrictHostKeyChecking=no $DEPLOYED_USER@$DEPLOYED_SERVER './deploy.sh'
-
+# test node pending
 workflows:
   backend-manage-pipeline:
     jobs:
