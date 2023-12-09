@@ -1,0 +1,33 @@
+# version circleci
+version: 2.1
+# Define the jobs we want to run for this project
+jobs:
+  building:
+    docker:
+      - image: .circleci/node:18
+    steps:
+      - checkout
+      - run: 
+          name: Install npm dependencies
+          command: | 
+            npm install --save
+  build_docker_image:
+    docker:
+      - image: .circleci/node:18 
+    steps: 
+      - checkout 
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run: 
+          name: Build docker image
+          command : |
+            docker build -t backend-manage - t tienld/backend-manage:latest .
+            echo $DOCKER_PASSWORD | docker login -u tienld --password-stdin
+            docker push tienld/backend-manage:latest 
+
+# Orchestrate our job run sequence
+workflows:
+  build_and_deployment:
+    jobs:
+      - building
+      - build_docker_image
