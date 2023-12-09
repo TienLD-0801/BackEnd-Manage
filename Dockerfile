@@ -1,5 +1,5 @@
 # Use the official Node.js 18 image as the base image
-FROM node:18 AS builder
+FROM node:alpine AS builder
 
 ENV TZ=Asia/Ho_Chi_Minh
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ /etc/timezone
@@ -8,11 +8,14 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ /etc/timezone
 WORKDIR /backend-manage
 
 # Copy the package.json and package-lock.json files to the container
-COPY package*.json ./
-COPY tsconfig.json ./
+COPY --chown=node:node package*.json ./
+COPY --chown=node:node tsconfig.json ./
+
+COPY --chown=node:node . .
 
 # Install the dependencies
 RUN npm install
+
 
 # Copy the rest of the application code to the container
 COPY . .
@@ -21,7 +24,7 @@ COPY . .
 RUN npm run build
 
 # Use a lightweight Node.js 18 image as the base image
-FROM node:18-alpine
+FROM node:alpine
 
 ENV TZ=Asia/Ho_Chi_Minh
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ /etc/timezone
@@ -39,6 +42,8 @@ COPY tsconfig.json ./
 
 # Expose port 3000 for the NestJS application
 EXPOSE 3000
+
+VOLUME [ "/backend-manage/node_modules" ]
 
 # Start the NestJS application
 CMD ["npm", "run", "start:prod"]
