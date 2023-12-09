@@ -19,7 +19,7 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: false
       - run: 
-          name: Build docker image
+          name: Build Docker image
           command : |
             docker build -t backend-manage - t leduytien0801/backend-manage:latest .
             echo $DOCKER_PASSWORD | docker login -u leduytien0801 --password-stdin
