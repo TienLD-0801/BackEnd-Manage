@@ -21,9 +21,9 @@ jobs:
       - run: 
           name: Build docker image
           command : |
-            docker build -t backend-manage - t tienld/backend-manage:latest .
-            echo $DOCKER_PASSWORD | docker login -u tienld --password-stdin
-            docker push tienld/backend-manage:latest 
+            docker build -t backend-manage - t leduytien0801/backend-manage:latest .
+            echo $DOCKER_PASSWORD | docker login -u leduytien0801 --password-stdin
+            docker push leduytien0801/backend-manage:latest 
 
 # Orchestrate our job run sequence
 workflows:
