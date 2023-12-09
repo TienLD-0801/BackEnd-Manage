@@ -10,11 +10,11 @@ if (process.env.NODE_ENV) {
 
 const dbConfig: TypeOrmModuleOptions = {
   type: 'mysql',
-  port: Number(process.env.RDS_PORT),
-  host: process.env.RDS_HOST,
-  username: process.env.RDS_USERNAME,
-  password: process.env.RDS_PASSWORD,
-  database: process.env.RDS_DATABASE,
+  port: Number(process.env.DB_PORT),
+  host: process.env.DB_HOST,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
   logger: 'debug',
   charset: 'utf8mb4',
   synchronize: true,
