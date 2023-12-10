@@ -21,7 +21,8 @@ jobs:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
           extra_build_arg:
-            NODE_ENV: $NODE_ENV
+            default: "$NODE_ENV"
+            type: string
       - docker/push:
           digest-path: /tmp/digest.txt
           image: $DOCKER_IMAGE
