@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Create and print .env file
           command: |
-            echo "NODE_ENV=example" > .env
+            echo "NODE_ENV=$NODE_ENV" > .env
             cat .env  
       - run:
           name: List files in current directory
