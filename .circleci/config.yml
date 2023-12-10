@@ -17,6 +17,14 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
+      - run:
+          name: Environment Settings
+          command: |
+            touch .env
+            cp .env .env
+            printf "\nNODE_ENV=$NODE_ENV" >> .env;
+            printf "\n" >> .env;
+            cat .env;    
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
