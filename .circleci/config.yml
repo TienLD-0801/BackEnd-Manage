@@ -7,18 +7,19 @@ orbs:
   docker: circleci/docker@2.4.0
 jobs:
   build-and-push:
-    - run:
+    environment:
+      DOCKER_IMAGE: leduytien0801/backend-manage
+      DOCKER_TAG: latest
+    executor: docker/docker
+    steps:
+      - run:
         name: Get IP Address
         command: |
           MY_IP=$(ifconfig eth0 | awk '/inet / {print $2}' | awk -F: '{print $2}')
           echo "export MY_IP=$MY_IP" >> $BASH_ENV
           echo "MY_IP=$MY_IP" >> $BASH_ENV
         environment:
-          DOCKER_IMAGE: leduytien0801/backend-manage
-          DOCKER_TAG: latest
-          MY_IP: $MY_IP
-    executor: docker/docker
-    steps:
+        MY_IP: $MY_IP  
       - setup_remote_docker
       - checkout
       - docker/check:
