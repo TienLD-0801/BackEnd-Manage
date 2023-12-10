@@ -20,10 +20,7 @@ jobs:
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
-          extra_build_arg:
-            default: "$NODE_ENV"
-            description: Extra flags to pass to docker build
-            type: string
+          extra_build_arg: '--build-arg TIENLD=leduytien'
       - docker/push:
           digest-path: /tmp/digest.txt
           image: $DOCKER_IMAGE
