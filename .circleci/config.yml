@@ -13,7 +13,7 @@ jobs:
     executor: docker/docker
     docker:
       - image: $DOCKER_IMAGE
-          environment:
+        environment:
           NODE_ENV: $NODE_ENV 
     steps:
       - setup_remote_docker
