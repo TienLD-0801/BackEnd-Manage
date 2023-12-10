@@ -22,6 +22,7 @@ jobs:
           tag: $DOCKER_TAG
           extra_build_arg:
             default: "$NODE_ENV"
+            description: Extra flags to pass to docker build
             type: string
       - docker/push:
           digest-path: /tmp/digest.txt
