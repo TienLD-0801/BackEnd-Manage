@@ -17,15 +17,12 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
+      - run:
+          name: "Setup custom environment variables"
+          command: echo 'export NODE_ENV="$NODE_ENV"' >> "$BASH_ENV"    
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
-          steps: 
-            - run: 
-                name : add environment
-                command: |
-                  environment:
-                    NODE_ENV: $NODE_ENV
       - docker/push:
           digest-path: /tmp/digest.txt
           image: $DOCKER_IMAGE
