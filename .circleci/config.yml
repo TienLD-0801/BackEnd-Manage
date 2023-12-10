@@ -10,6 +10,7 @@ jobs:
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
       DOCKER_TAG: latest
+      NODE_ENV: $NODE_ENV
     executor: docker/docker
     steps:
       - setup_remote_docker
@@ -18,7 +19,6 @@ jobs:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
       - docker/build:
-          extra_build_args: '--build-arg FOO=bar --build-arg BAZ=qux' 
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
       - docker/push:
