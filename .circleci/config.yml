@@ -18,15 +18,15 @@ jobs:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
       - run:
-          name: Create .env file
+          name: create .env file
           command: echo "NODE_ENV=$NODE_ENV" > .env
       - persist_to_workspace:
           root: . 
           paths:
             - .env  
       - run:
-          name: Copy .env to Docker workdir
-          command: cp /workspace/.env /backend-manage/.env
+          name: copy .env to Docker workdir
+          command: cp .env /backend-manage/.env
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
