@@ -10,6 +10,7 @@ jobs:
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
       DOCKER_TAG: latest
+      MY_IP: $(ifconfig en0 | grep 'inet ' | awk '{print $2}')
     executor: docker/docker
     steps:
       - setup_remote_docker
@@ -26,7 +27,7 @@ jobs:
              --build-arg DB_USER=$DB_USER
              --build-arg DB_PASSWORD=$DB_PASSWORD
              --build-arg DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD
-             --build-arg DB_HOST=$(ifconfig en0 | grep 'inet ' | awk '{print $2}')
+             --build-arg DB_HOST=$MY_IP
              --build-arg DB_DATABASE=$DB_DATABASE
              --build-arg TIMEZONE_NUM=$TIMEZONE_NUM
              --build-arg CLOUD_NAME=$CLOUD_NAME
