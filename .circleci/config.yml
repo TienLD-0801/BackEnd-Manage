@@ -12,19 +12,18 @@ jobs:
       DOCKER_TAG: latest
     executor: docker/docker
     steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check:
+          docker-username: DOCKER_USER
+          docker-password: DOCKER_PASSWORD
       - run:
           name: Get IP Address
           command: |
             MY_IP=$(ifconfig eth0 | awk '/inet / {print $2}' | awk -F: '{print $2}')
             echo "export MY_IP=$MY_IP" >> $BASH_ENV
             echo "MY_IP=$MY_IP" >> $BASH_ENV
-          environment:
-            MY_IP: $MY_IP  
-      - setup_remote_docker
-      - checkout
-      - docker/check:
-          docker-username: DOCKER_USER
-          docker-password: DOCKER_PASSWORD
+            docker build --build-arg DB_HOST=$MY_IP -t $DOCKER_IMAGE:$DOCKER_TAG .    
       - docker/build:
           extra_build_args: 
             '--build-arg NODE_ENV=dev
@@ -35,7 +34,6 @@ jobs:
              --build-arg DB_PASSWORD=$DB_PASSWORD
              --build-arg DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD
              --build-arg DB_DATABASE=$DB_DATABASE
-             --build-arg DB_HOST=$MY_IP
              --build-arg TIMEZONE_NUM=$TIMEZONE_NUM
              --build-arg CLOUD_NAME=$CLOUD_NAME
              --build-arg API_KEY=$API_KEY
