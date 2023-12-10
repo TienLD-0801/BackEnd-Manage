@@ -10,7 +10,7 @@ services:
       MYSQL_USER: $DB_USER
       MYSQL_PASSWORD: $DB_PASSWORD
       MYSQL_ROOT_PASSWORD: $DB_PASSWORD
-      TZ: Asia/Ho_Chi_Minh
+      TZ: $TIMEZONE_TEXT
     ports:
       - $DB_PORT:$DB_PORT
     expose:

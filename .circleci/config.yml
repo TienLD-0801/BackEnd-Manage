@@ -14,13 +14,12 @@ jobs:
     steps:
       - setup_remote_docker
       - checkout
-      - run:
-          name: setting environment variables
-          command: |
-            echo 'export NODE_ENV="$NODE_ENV"' >> /backend-manage/.env
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
+      - run:
+          name: Run Docker container with env file
+          command: docker run -v $PWD/env_file:/path/to/env_file $DOCKER_IMAGE
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
