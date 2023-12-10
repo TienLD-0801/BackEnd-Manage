@@ -16,7 +16,7 @@ jobs:
       - checkout
       - run:
           name: setting environment variables
-          command: ls
+          command: env
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
