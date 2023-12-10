@@ -19,7 +19,7 @@ jobs:
           docker-password: DOCKER_PASSWORD
       - docker/build:
           extra_build_args: 
-            '--build-arg NODE_ENV=$NODE_ENV
+            '--build-arg NODE_ENV=dev
              --build-arg APP_PORT=$APP_PORT
              --build-arg DB_CONNECTION=$DB_CONNECTION
              --build-arg DB_PORT=$DB_PORT
@@ -27,7 +27,7 @@ jobs:
              --build-arg DB_PASSWORD=$DB_PASSWORD
              --build-arg DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD
              --build-arg DB_DATABASE=$DB_DATABASE
-             --build-arg DB_HOST=$DB_HOST
+             --build-arg DB_HOST=192.168.1.3
              --build-arg TIMEZONE_NUM=$DB_HOST
              --build-arg CLOUD_NAME=$CLOUD_NAME
              --build-arg API_KEY=$API_KEY
