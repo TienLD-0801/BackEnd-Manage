@@ -17,10 +17,12 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
+       - docker/publish:
+          extra_build_args: '--build-arg FOO=bar --build-arg BAZ=qux'
+          image: $DOCKER_IMAGE
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
-          extra_build_arg: '--build-arg TIENLD=leduytien'
       - docker/push:
           digest-path: /tmp/digest.txt
           image: $DOCKER_IMAGE
