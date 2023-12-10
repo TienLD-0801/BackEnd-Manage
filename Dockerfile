@@ -39,6 +39,8 @@ COPY --from=builder  /backend-manage/node_modules ./node_modules
 COPY package*.json ./
 COPY tsconfig.json ./
 
+ENV NODE_ENV=$NODE_ENV
+
 # Expose port 3000 for the NestJS application
 EXPOSE 3000
 
