@@ -21,6 +21,7 @@ jobs:
           name: Get IP Address
           command: |
             echo $(ifconfig eth0 | awk '/inet / {print $2}' | awk -F: '{print $2}') > my_ip.txt
+            cat my_ip.txt
       - docker/build:
           extra_build_args: 
             '--build-arg NODE_ENV=dev
