@@ -24,6 +24,7 @@ jobs:
               cat .env
             else
               echo "File .env not found."
+            fi  
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
