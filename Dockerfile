@@ -3,7 +3,8 @@ FROM node:alpine AS builder
 
 
 ENV TZ=Asia/Ho_Chi_Minh
-
+ARG TIEN_LD
+ENV TIEN_LD=$TIEN_LD
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ /etc/timezone
 
 # Set the working directory in the container to /backend-manage
