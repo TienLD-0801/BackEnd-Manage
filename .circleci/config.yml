@@ -11,6 +11,9 @@ jobs:
       DOCKER_IMAGE: leduytien0801/backend-manage
       DOCKER_TAG: latest
     executor: docker/docker
+    docker:
+      environment:
+        NODE_ENV: $NODE_ENV 
     steps:
       - setup_remote_docker
       - checkout
