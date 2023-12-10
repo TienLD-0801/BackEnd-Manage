@@ -20,8 +20,10 @@ jobs:
       - run:
           name: Environment Settings
           command: |
-           if [ -f .env ]; then
-             cat .env
+            if [ -f .env ]; then
+              cat .env
+            else
+              echo "File .env not found."
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
