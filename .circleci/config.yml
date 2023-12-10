@@ -18,6 +18,9 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
+      - run:
+          name: Copy .env to Docker workdir
+          command: cp /workspace/.env /backend-manage/.env
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
