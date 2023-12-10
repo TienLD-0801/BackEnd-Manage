@@ -18,13 +18,9 @@ jobs:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
       - docker/build:
+          extra_build_args: ''
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
-        steps:    
-          - run:
-              name: settings variable 
-              command: |  
-                echo 'tienld'
       - docker/push:
           digest-path: /tmp/digest.txt
           image: $DOCKER_IMAGE
