@@ -22,10 +22,10 @@ jobs:
           command: |
             echo "NODE_ENV=$NODE_ENV" > .env
             cat .env  
-      - run 
-        name : build docker
-        command: | 
-          docker build --build-arg ENV_VARIABLE=$(cat .env) -t $DOCKER_IMAGE:$DOCKER_TAG .
+      - run: 
+          name : build docker
+          command: | 
+            docker build --build-arg ENV_VARIABLE=$(cat .env) -t $DOCKER_IMAGE:$DOCKER_TAG .
       - docker/push:
           digest-path: /tmp/digest.txt
           image: $DOCKER_IMAGE
