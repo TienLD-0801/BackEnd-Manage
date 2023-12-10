@@ -20,6 +20,12 @@ jobs:
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
+          steps: 
+            - run: 
+                name : add environment
+                command: |
+                  environment:
+                    NODE_ENV: $NODE_ENV
       - docker/push:
           digest-path: /tmp/digest.txt
           image: $DOCKER_IMAGE
