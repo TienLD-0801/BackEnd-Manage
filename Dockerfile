@@ -3,8 +3,6 @@ FROM node:alpine AS builder
 
 
 ENV TZ=Asia/Ho_Chi_Minh
-ARG TIEN_LD
-ENV TIEN_LD=$TIEN_LD
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ /etc/timezone
 
 # Set the working directory in the container to /backend-manage
@@ -42,6 +40,9 @@ COPY --from=builder  /backend-manage/node_modules ./node_modules
 
 COPY package*.json ./
 COPY tsconfig.json ./
+
+ARG TIEN_LD
+ENV TIEN_LD=$TIEN_LD
 
 # Expose port 3000 for the NestJS application
 EXPOSE 3000
