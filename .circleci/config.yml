@@ -22,20 +22,10 @@ jobs:
           command: |
             echo "NODE_ENV=$NODE_ENV" > .env
             cat .env  
-      - run:
-          name: List files in current directory
-          command: ls -al
-      # - run:
-      #     name: Environment Settings
-      #     command: |
-      #       if [ -f env ]; then
-      #         cat env
-      #       else
-      #         echo "File .env not found."
-      #       fi  
-      - docker/build:
-          image: $DOCKER_IMAGE
-          tag: $DOCKER_TAG
+      - run 
+        name : build docker
+        command: | 
+          docker build --build-arg ENV_VARIABLE=$(cat .env) -t $DOCKER_IMAGE:$DOCKER_TAG .
       - docker/push:
           digest-path: /tmp/digest.txt
           image: $DOCKER_IMAGE
