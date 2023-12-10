@@ -19,7 +19,7 @@ jobs:
             echo "export MY_IP=$MY_IP" >> $BASH_ENV
             echo "MY_IP=$MY_IP" >> $BASH_ENV
           environment:
-          MY_IP: $MY_IP  
+            MY_IP: $MY_IP  
       - setup_remote_docker
       - checkout
       - docker/check:
