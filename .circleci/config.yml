@@ -17,6 +17,9 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
+       - run:
+          name: List files in current directory
+          command: ls -al    
       - run:
           name: Environment Settings
           command: |
