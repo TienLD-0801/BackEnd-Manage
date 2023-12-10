@@ -14,10 +14,10 @@ jobs:
     steps:
       - setup_remote_docker
       - checkout
-    docker:
-      - image: $DOCKER_IMAGE
-        environment:
-          NODE_ENV: $NODE_ENV
+      - docker:
+          image: $DOCKER_IMAGE
+          environment:
+            NODE_ENV: $NODE_ENV
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
