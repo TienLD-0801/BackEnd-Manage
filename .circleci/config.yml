@@ -14,6 +14,10 @@ jobs:
     steps:
       - setup_remote_docker
       - checkout
+      - run:
+          name: setting environment variables
+          command: |
+            echo 'export NODE_ENV="$NODE_ENV"' >> /backend-manage/.env
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
@@ -24,18 +28,6 @@ jobs:
           digest-path: /tmp/digest.txt
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
-      - run:
-          name: setting environment variables
-          command: |
-            export MYIP=`ifconfig eth0 | awk '/inet / {print $2}' | awk -F: '{print $2}'`
-            echo "export MYIP=$MYIP" >> $BASH_ENV
-            echo "export NODE_ENV=$NODE_ENV" >> $BASH_ENV
-            echo "export DB_HOST=$MYIP" >> $BASH_ENV
-            echo "export DB_DATABASE=$DB_DATABASE" >> $BASH_ENV
-            echo "export DB_USERNAME=$DB_USER" >> $BASH_ENV
-            echo "export DB_PASSWORD=$DB_PASSWORD" >> $BASH_ENV
-            echo "export DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD" >> $BASH_ENV
-            source $BASH_ENV    
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
