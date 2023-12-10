@@ -10,14 +10,11 @@ jobs:
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
       DOCKER_TAG: latest
+      MY_IP: $(curl -s ifconfig.me)
     executor: docker/docker
     steps:
       - setup_remote_docker
       - checkout
-      - run:
-          name: get IP Address
-          command: |
-            MY_IP=$(curl -s ifconfig.me)
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
@@ -32,7 +29,7 @@ jobs:
              --build-arg DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD
              --build-arg DB_DATABASE=$DB_DATABASE
              --build-arg DB_HOST=$MY_IP
-             --build-arg TIMEZONE_NUM=$DB_HOST
+             --build-arg TIMEZONE_NUM=$TIMEZONE_NUM
              --build-arg CLOUD_NAME=$CLOUD_NAME
              --build-arg API_KEY=$API_KEY
              --build-arg API_SECRET=$API_KEY'
