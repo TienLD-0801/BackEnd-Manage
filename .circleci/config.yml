@@ -17,7 +17,7 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
-       - docker/publish:
+      - docker/publish:
           extra_build_args: '--build-arg FOO=bar --build-arg BAZ=qux'
           image: $DOCKER_IMAGE
       - docker/build:
