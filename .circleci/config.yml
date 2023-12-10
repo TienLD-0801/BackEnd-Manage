@@ -20,11 +20,8 @@ jobs:
       - run:
           name: Environment Settings
           command: |
-            touch .env
-            cp .env .env
-            printf "\nNODE_ENV=$NODE_ENV" >> .env;
-            printf "\n" >> .env;
-            cat .env;    
+           if [ -f .env ]; then
+             cat .env
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
