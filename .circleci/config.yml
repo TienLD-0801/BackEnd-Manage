@@ -18,16 +18,21 @@ jobs:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
       - run:
+          name: Create and print .env file
+          command: |
+            echo "NODE_ENV=example" > .env
+            cat .env  
+      - run:
           name: List files in current directory
           command: ls -al
-      - run:
-          name: Environment Settings
-          command: |
-            if [ -f env ]; then
-              cat env
-            else
-              echo "File .env not found."
-            fi  
+      # - run:
+      #     name: Environment Settings
+      #     command: |
+      #       if [ -f env ]; then
+      #         cat env
+      #       else
+      #         echo "File .env not found."
+      #       fi  
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
