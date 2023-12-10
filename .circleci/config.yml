@@ -17,15 +17,13 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
-      - run:
-          name: Create and print .env file
-          command: |
-            echo "NODE_ENV=$NODE_ENV" > .env
-            cat .env  
-      - run: 
-          name : build docker
-          command: | 
-            docker build --build-arg ENV_VARIABLE=$(cat .env) -t $DOCKER_IMAGE:$DOCKER_TAG .
+      - docker/publish:
+          extra_build_args: '--build-arg FOO=bar --build-arg BAZ=qux' 
+          image: $DOCKER_IMAGE
+          tag: $DOCKER_TAG   
+      - docker/build:
+          image: $DOCKER_IMAGE
+          tag: $DOCKER_TAG
       - docker/push:
           digest-path: /tmp/digest.txt
           image: $DOCKER_IMAGE
