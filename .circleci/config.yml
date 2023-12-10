@@ -17,11 +17,6 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
-      - run:
-          name: Get IP Address
-          command: |
-            echo $(ifconfig eth0 | awk '/inet / {print $2}' | awk -F: '{print $2}') > my_ip.txt
-            cat my_ip.txt
       - docker/build:
           extra_build_args: 
             '--build-arg NODE_ENV=dev
@@ -31,7 +26,7 @@ jobs:
              --build-arg DB_USER=$DB_USER
              --build-arg DB_PASSWORD=$DB_PASSWORD
              --build-arg DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD
-             --build-arg DB_HOST=$(cat my_ip.txt)
+             --build-arg DB_HOST=$(ifconfig en0 | grep 'inet ' | awk '{print $2}')
              --build-arg DB_DATABASE=$DB_DATABASE
              --build-arg TIMEZONE_NUM=$TIMEZONE_NUM
              --build-arg CLOUD_NAME=$CLOUD_NAME
