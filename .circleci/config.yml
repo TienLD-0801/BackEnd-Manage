@@ -13,13 +13,13 @@ jobs:
     executor: docker/docker
     steps:
       - run:
-        name: Get IP Address
-        command: |
-          MY_IP=$(ifconfig eth0 | awk '/inet / {print $2}' | awk -F: '{print $2}')
-          echo "export MY_IP=$MY_IP" >> $BASH_ENV
-          echo "MY_IP=$MY_IP" >> $BASH_ENV
-        environment:
-        MY_IP: $MY_IP  
+          name: Get IP Address
+          command: |
+            MY_IP=$(ifconfig eth0 | awk '/inet / {print $2}' | awk -F: '{print $2}')
+            echo "export MY_IP=$MY_IP" >> $BASH_ENV
+            echo "MY_IP=$MY_IP" >> $BASH_ENV
+          environment:
+          MY_IP: $MY_IP  
       - setup_remote_docker
       - checkout
       - docker/check:
