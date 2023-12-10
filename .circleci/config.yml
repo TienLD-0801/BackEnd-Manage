@@ -15,9 +15,9 @@ jobs:
       - setup_remote_docker
       - checkout
       - run:
-        name: setting environment variables
-        command: |
-          echo 'export NODE_ENV="$NODE_ENV"' >> /backend-manage/.env
+          name: setting environment variables
+          command: |
+            echo 'export NODE_ENV="$NODE_ENV"' >> /backend-manage/.env
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
