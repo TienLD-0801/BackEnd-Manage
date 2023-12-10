@@ -20,9 +20,8 @@ jobs:
       - run:
           name: Get IP Address
           command: |
-            MY_IP=$(ifconfig eth0 | awk '/inet / {print $2}' | awk -F: '{print $2}')
-            echo "export MY_IP=$MY_IP" >> $BASH_ENV
-            echo "MY_IP=$MY_IP" >> $BASH_ENV
+            export MYIP=`ifconfig eth0 | awk '/inet / {print $2}' | awk -F: '{print $2}'`
+            echo "export MYIP=$MYIP" >> $BASH_ENV
             docker build --build-arg DB_HOST=$MY_IP -t $DOCKER_IMAGE:$DOCKER_TAG .    
       - docker/build:
           extra_build_args: 
