@@ -10,7 +10,6 @@ jobs:
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
       DOCKER_TAG: latest
-      NODE_ENV: $NODE_ENV
     executor: docker/docker
     steps:
       - setup_remote_docker
@@ -18,6 +17,13 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
+      - run:
+          name: Create .env file
+          command: echo "NODE_ENV=$NODE_ENV" > .env
+      - persist_to_workspace:
+          root: . 
+          paths:
+            - .env  
       - run:
           name: Copy .env to Docker workdir
           command: cp /workspace/.env /backend-manage/.env
