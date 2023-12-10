@@ -15,10 +15,10 @@ jobs:
       - setup_remote_docker
       - checkout
       - docker/check:
-          extra_build_args: '--build-arg FOO=bar --build-arg BAZ=qux' 
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
       - docker/build:
+          extra_build_args: '--build-arg FOO=bar --build-arg BAZ=qux' 
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
       - docker/push:
