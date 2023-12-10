@@ -1,6 +1,8 @@
 # Use the official Node.js 18 image as the base image
 FROM node:alpine AS builder
 
+ARG ENV_VARIABLE
+ENV ENV_VARIABLE=$ENV_VARIABLE
 ENV TZ=Asia/Ho_Chi_Minh
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ /etc/timezone
 
@@ -35,6 +37,7 @@ WORKDIR  /backend-manage
 # Copy the production build files from the builder image to the container
 COPY --from=builder  /backend-manage/dist ./dist
 COPY --from=builder  /backend-manage/node_modules ./node_modules
+
 
 COPY package*.json ./
 COPY tsconfig.json ./
