@@ -20,8 +20,8 @@ jobs:
       - run:
           name: Environment Settings
           command: |
-            if [ -f .env ]; then
-              cat .env
+            if [ -f env ]; then
+              cat env
             else
               echo "File .env not found."
             fi  
