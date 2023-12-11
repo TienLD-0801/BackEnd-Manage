@@ -20,10 +20,7 @@ jobs:
           name: Build app
       - run:
           command: |
-             cp $BASH_ENV .env
-          name: Create .env
-      - run:
-          command: cat .env
+             cat $BASH_ENV
           name: Show env
   build-and-push:
     environment:
