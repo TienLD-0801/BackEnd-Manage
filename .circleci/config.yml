@@ -23,7 +23,7 @@ jobs:
       - run: 
           name: Build docker compose
           command: | 
-            cp env/.env.example .env.dev 
+            cp env/.env.example .env
             yarn run docker-up
       - run: 
           name : Build APP 
