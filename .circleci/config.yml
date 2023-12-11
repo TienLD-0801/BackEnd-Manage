@@ -34,7 +34,7 @@ jobs:
             printf "\nAPI_KEY=$API_KEY" >> env/.env.example;
             printf "\nAPI_SECRET=$API_SECRET" >> env/.env.example;
             cat env/.env.example;
-          name: Xem file  
+          name: env file
   build-and-push:
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
@@ -50,6 +50,7 @@ jobs:
           name : Build docker composer
           command: |
             cp env/.env.example .env.dev
+            cat .env.dev
             docker-compose up -d     
       - docker/build:
           extra_build_args: 
