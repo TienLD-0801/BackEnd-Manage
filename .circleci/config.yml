@@ -26,7 +26,7 @@ jobs:
              --build-arg DB_USER=$DB_USER
              --build-arg DB_PASSWORD=$DB_PASSWORD
              --build-arg DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD
-             --build-arg DB_HOST=database_mysql
+             --build-arg DB_HOST=database_mysql1
              --build-arg DB_DATABASE=$DB_DATABASE
              --build-arg TIMEZONE_NUM=$TIMEZONE_NUM
              --build-arg CLOUD_NAME=$CLOUD_NAME
