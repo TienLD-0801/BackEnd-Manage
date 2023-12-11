@@ -22,7 +22,8 @@ jobs:
           name: Xem file     
       - run:
           command: |
-            cat env/.env.example
+            printf "\nNODE_ENV=$NODE_ENV" >> env/.env.example;
+            cat env/.env.example;
           name: Xem file  
       # - run:
       #     command: yarn build
