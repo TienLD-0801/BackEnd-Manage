@@ -47,11 +47,14 @@ jobs:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
       - run: 
+          name : Env file
+          command: |   
+            cat env/.env.example
+      - run: 
           name : Build docker composer
           command: |
             cp env/.env.example .env.dev
-            cat .env.dev
-            docker-compose up -d     
+            docker-compose up --build   
       - docker/build:
           extra_build_args: 
             '--build-arg NODE_ENV=dev
