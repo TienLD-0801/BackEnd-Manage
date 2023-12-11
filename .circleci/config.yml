@@ -19,15 +19,18 @@ jobs:
           command: yarn build
           name: Build app
       - run: 
-          command: ls
-          name: Watch env
+          command: mkdir .env
+          name: Create .env
+      - run: 
+          command: cd .env
+          name: Cat env
       # - run: 
       #     command: yarn docker-dev-up -d
       #     name: Build docker composer      
-      - persist_to_workspace:
-          root: ~/backend-manage
-          paths:
-            - .     
+      # - persist_to_workspace:
+      #     root: ~/backend-manage
+      #     paths:
+      #       - .     
   build-and-push:
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
