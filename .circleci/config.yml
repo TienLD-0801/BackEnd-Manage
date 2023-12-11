@@ -22,7 +22,7 @@ jobs:
           command: mkdir .env
           name: Create .env
       - run: 
-          command: cd .env
+          command: ls
           name: Cat env
       # - run: 
       #     command: yarn docker-dev-up -d
