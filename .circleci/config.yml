@@ -15,13 +15,13 @@ jobs:
       - run:
           command: yarn test
           name: Run tests
-      - run:
-          command: yarn build
-          name: Build app
+      # - run:
+      #     command: yarn build
+      #     name: Build app
       - run:
           command: |
-             cat $BASH_ENV
-          name: Show env
+             ls $CIRCLE_WORKING_DIRECTORY
+          name: Show file
   build-and-push:
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
