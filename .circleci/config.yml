@@ -21,7 +21,7 @@ jobs:
       - run:
           command: echo "VARIABLE=value" >> .env
           name: Create .env
-       - run:
+      - run:
           command: ls
           name: Show file
       - run:
