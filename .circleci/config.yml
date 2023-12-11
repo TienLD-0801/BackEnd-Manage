@@ -38,11 +38,12 @@ jobs:
           docker-password: DOCKER_PASSWORD
       - run: 
           name : Run docker compose 
-          command: docker-compose build
+          command: |
+            cp env/.env.example .env
+            docker-compose build
       - run: 
           name : Run docker compose images
           command: | 
-            cp env/.env.example .env
             docker compose images      
       - docker/build:
           image: $DOCKER_IMAGE
