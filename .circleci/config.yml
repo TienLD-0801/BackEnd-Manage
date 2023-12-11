@@ -12,6 +12,8 @@ jobs:
       DOCKER_TAG: latest
     executor: docker/docker
     steps:
+      - setup_remote_docker
+      - checkout
       - node/install-packages:
           pkg-manager: yarn
       - run:
@@ -20,8 +22,6 @@ jobs:
       - run:
           command: yarn build
           name: Build app demo
-      - setup_remote_docker
-      - checkout
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
