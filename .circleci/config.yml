@@ -18,7 +18,8 @@ jobs:
           name: Run tests
       - run:
           command: |
-            ls /tmp/
+            touch /home/circleci/backend-manage/.env
+            ls home/circleci/backend-manage/
           name: Show file 1 
       # - run:
       #     command: yarn build
