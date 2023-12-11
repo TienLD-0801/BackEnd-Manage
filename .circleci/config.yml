@@ -40,11 +40,7 @@ jobs:
           name : Run docker compose 
           command: |
             cp env/.env.example .env
-            docker-compose build
-      - run: 
-          name : Run docker compose images
-          command: | 
-            docker compose images      
+            docker-compose build 
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
