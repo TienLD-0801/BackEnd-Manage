@@ -41,9 +41,9 @@ jobs:
           command: |
             cp env/.env.example .env
             docker-compose build 
-      - docker/build:
-          image: $DOCKER_IMAGE
-          tag: $DOCKER_TAG
+      # - docker/build:
+      #     image: $DOCKER_IMAGE
+      #     tag: $DOCKER_TAG
       - docker/push:
           digest-path: /tmp/digest.txt
           image: $DOCKER_IMAGE
