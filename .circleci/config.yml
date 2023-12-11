@@ -25,25 +25,25 @@ jobs:
       DOCKER_TAG: latest
     executor: docker/docker
     steps:
-      - run:
-          name: Install `docker-compose`
-          command: |
-            curl -L https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-            chmod +x ~/docker-compose
-            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+      # - run:
+      #     name: Install `docker-compose`
+      #     command: |
+      #       curl -L https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+      #       chmod +x ~/docker-compose
+      #       sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - setup_remote_docker
       - checkout
-      - docker/check:
-          docker-username: DOCKER_USER
-          docker-password: DOCKER_PASSWORD
       - run: 
           name : Run docker compose 
           command: |
             cp env/.env.example .env
-            docker-compose build 
-      # - docker/build:
-      #     image: $DOCKER_IMAGE
-      #     tag: $DOCKER_TAG
+            docker-compose -f docker-compose.yml up
+      - docker/check:
+          docker-username: DOCKER_USER
+          docker-password: DOCKER_PASSWORD
+      - docker/build:
+          image: $DOCKER_IMAGE
+          tag: $DOCKER_TAG
       - docker/push:
           digest-path: /tmp/digest.txt
           image: $DOCKER_IMAGE
