@@ -18,11 +18,7 @@ jobs:
           name: Run tests
       - run:
           command: |
-            touch .env
-          name: Show file 1 
-      - run:
-          command: |
-            ls
+            ls env/.env.example
           name: Xem file  
       # - run:
       #     command: yarn build
