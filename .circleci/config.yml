@@ -41,7 +41,7 @@ jobs:
           working_directory: ./
           command: |
             cp env/.env.example .env.dev
-            yarn run start-local-docker -d
+            yarn run docker-dev-up -d
       # - run:
       #     command: yarn build
       #     name: Build app
