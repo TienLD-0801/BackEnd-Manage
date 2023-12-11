@@ -15,14 +15,14 @@ COPY --chown=node:node tsconfig.json ./
 COPY --chown=node:node . .
 
 # Install the dependencies
-RUN npm install
+RUN yarn install
 
 
 # Copy the rest of the application code to the container
 COPY . .
 
 # Build the production version of the application
-RUN npm run build
+RUN yarn run build
 
 # Use a lightweight Node.js 18 image as the base image
 FROM node:alpine

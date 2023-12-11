@@ -8,7 +8,9 @@ orbs:
 jobs:   
   build-and-push:
     environment:
-      DOCKER_IMAGE: leduytien0801/backend-manage
+      DOCKER_IMAGE_NEST: app
+      DOCKER_IMAGE_MYSQL: mysql
+      DOCKER_IMAGE_REDIS: redis
       DOCKER_TAG: latest
     executor: docker/docker
     steps:
@@ -18,16 +20,35 @@ jobs:
           install-yarn: true
           node-version: '16.13'
       - run: node --version
+      - run: 
+          name: Build docker compose
+          command: | 
+            cp env/.env.example .env.dev 
+            yarn run docker-dev-up -d
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
       - docker/build:
-          image: $DOCKER_IMAGE
+          image: $DOCKER_IMAGE_NEST
+          tag: $DOCKER_TAG
+      - docker/build:
+          image: $DOCKER_IMAGE_MYSQL
+          tag: $DOCKER_TAG    
+      - docker/build:
+          image: $DOCKER_IMAGE_REDIS
+          tag: $DOCKER_TAG        
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: $DOCKER_IMAGE_NEST
           tag: $DOCKER_TAG
       - docker/push:
           digest-path: /tmp/digest.txt
-          image: $DOCKER_IMAGE
-          tag: $DOCKER_TAG
+          image: $DOCKER_IMAGE_MYSQL
+          tag: $DOCKER_TAG  
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: $DOCKER_IMAGE_REDIS
+          tag: $DOCKER_TAG      
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
