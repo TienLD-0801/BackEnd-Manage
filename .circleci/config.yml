@@ -20,7 +20,7 @@ jobs:
       #     name: Build app
       - run:
           command: |
-             ls $CIRCLE_WORKING_DIRECTORY
+             ls ./
           name: Show file
   build-and-push:
     environment:
