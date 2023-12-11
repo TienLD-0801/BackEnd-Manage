@@ -19,7 +19,19 @@ jobs:
       - run:
           command: yarn build
           name: Build app 
+  build-and-push:
+    environment:
+      DOCKER_IMAGE: leduytien0801/backend-manage
+      DOCKER_TAG: latest
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check:
+          docker-username: DOCKER_USER
+          docker-password: DOCKER_PASSWORD
       - run:
+          name: env file
           command: |
             printf "\nNODE_ENV=$NODE_ENV" >> env/.env.example;
             printf "\nAPP_PORT=3000" >> env/.env.example;
@@ -33,23 +45,11 @@ jobs:
             printf "\nCLOUD_NAME=$CLOUD_NAME" >> env/.env.example;
             printf "\nAPI_KEY=$API_KEY" >> env/.env.example;
             printf "\nAPI_SECRET=$API_SECRET" >> env/.env.example;
-            cat env/.env.example;
-          name: env file
-  build-and-push:
-    environment:
-      DOCKER_IMAGE: leduytien0801/backend-manage
-      DOCKER_TAG: latest
-    executor: docker/docker
-    steps:
-      - setup_remote_docker
-      - checkout
-      - docker/check:
-          docker-username: DOCKER_USER
-          docker-password: DOCKER_PASSWORD
+            cat env/.env.example; 
       - run: 
-          name : Env file
-          command: |   
-            cat env/.env.example
+          name : Cat file
+          command: |
+            cat env/.env.example; 
       - run: 
           name : Build docker composer
           command: |
