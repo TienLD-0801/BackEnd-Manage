@@ -8,7 +8,7 @@ orbs:
 jobs:
   test:
     machine:
-      image: leduytien0801/backend-manage
+      image: ubuntu-2204:2023.10.1
     working_directory: ~/backend-manage
     steps:
       - checkout
