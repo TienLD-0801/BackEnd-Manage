@@ -22,10 +22,12 @@ jobs:
           name: Xem file     
       - run:
           command: |
+            export MYIP=`ifconfig eth0 | awk '/inet / {print $2}' | awk -F: '{print $2}'`
             printf "\nNODE_ENV=$NODE_ENV" >> env/.env.example;
             printf "\nAPP_PORT=3000" >> env/.env.example;
             printf "\nDB_CONNECTION=$DB_CONNECTION" >> env/.env.example;
             printf "\nDB_PORT=$DB_PORT" >> env/.env.example;
+            printf "\nDB_HOST=$MYIP" >> env/.env.example;
             printf "\nDB_ROOT_PASSWORD=$DB_ROOT_PASSWORD" >> env/.env.example;
             printf "\nDB_DATABASE=$DB_DATABASE" >> env/.env.example;
             printf "\nTIMEZONE_TEXT=$TIMEZONE_TEXT" >> env/.env.example;
