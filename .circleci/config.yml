@@ -41,7 +41,9 @@ jobs:
           command: docker-compose build
       - run: 
           name : Run docker compose images
-          command: docker compose images      
+          command: | 
+            cp env/.env.example .env
+            docker compose images      
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
