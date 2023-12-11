@@ -9,6 +9,10 @@ jobs:
   test:
     executor: node/default
     steps:
+      - run:
+          command: |
+             ls
+          name: Show file
       - checkout
       - node/install-packages:
           pkg-manager: yarn
@@ -18,10 +22,6 @@ jobs:
       # - run:
       #     command: yarn build
       #     name: Build app
-      - run:
-          command: |
-             ls ./
-          name: Show file
   build-and-push:
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
