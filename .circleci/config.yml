@@ -19,9 +19,12 @@ jobs:
           command: yarn build
           name: Build app
       - persist_to_workspace:
-          root: ~/project
+          root: ~/backend-manage
           paths:
             - .
+      - run: 
+          command: yarn docker-dev-up -d
+          name: Build docker composer        
   build-and-push:
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
@@ -33,11 +36,6 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
-      - run:
-          name: launch docker container
-          working_directory: ./
-          command: |
-            npm run docker-dev-up -d    
       - docker/build:
           extra_build_args: 
             '--build-arg NODE_ENV=dev
