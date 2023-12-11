@@ -27,7 +27,7 @@ jobs:
       - run: 
           command: | 
             cp .env .env.dev
-            yarn docker-dev-up -d
+            yarn docker-dev-up
           name: Build docker composer      
       # - persist_to_workspace:
       #     root: ~/backend-manage
