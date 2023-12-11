@@ -19,8 +19,11 @@ jobs:
           command: yarn build
           name: Build app
       - run: 
-          command: yarn docker-dev-up -d
-          name: Build docker composer      
+          command: ls
+          name: Watch env
+      # - run: 
+      #     command: yarn docker-dev-up -d
+      #     name: Build docker composer      
       - persist_to_workspace:
           root: ~/backend-manage
           paths:
