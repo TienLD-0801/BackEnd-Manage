@@ -46,6 +46,10 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
+      - run: 
+          name : Build docker composer
+          command: |
+            docker-compose up -d     
       - docker/build:
           extra_build_args: 
             '--build-arg NODE_ENV=dev
@@ -59,7 +63,7 @@ jobs:
              --build-arg TIMEZONE_NUM=$TIMEZONE_NUM
              --build-arg CLOUD_NAME=$CLOUD_NAME
              --build-arg API_KEY=$API_KEY
-             --build-arg API_SECRET=$API_KEY'
+             --build-arg API_SECRET=$API_SECRET'
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
       - docker/push:
