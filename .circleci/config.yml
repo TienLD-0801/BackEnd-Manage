@@ -24,15 +24,6 @@ jobs:
       - run:
           command: cat .env
           name: Show env
-      - run: 
-          command: | 
-            cp .env .env.dev
-            yarn docker-dev-up
-          name: Build docker composer      
-      # - persist_to_workspace:
-      #     root: ~/backend-manage
-      #     paths:
-      #       - .     
   build-and-push:
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
@@ -44,6 +35,11 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
+      - run: 
+          command: | 
+            cp .env .env.dev
+            yarn docker-dev-up -d
+          name: Build docker composer       
       - docker/build:
           extra_build_args: 
             '--build-arg NODE_ENV=dev
