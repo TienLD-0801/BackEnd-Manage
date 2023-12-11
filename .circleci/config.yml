@@ -87,6 +87,7 @@ workflows:
   backend-manage-pipeline:
     jobs:
       - node/test
+      - test
       - build-and-push:
           requires:
             - node/test
