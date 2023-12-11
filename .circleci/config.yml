@@ -18,7 +18,11 @@ jobs:
           name: Run tests
       - run:
           command: |
-            ls env/.env.example
+            ls
+          name: Xem file     
+      - run:
+          command: |
+            cat env/.env.example
           name: Xem file  
       # - run:
       #     command: yarn build
