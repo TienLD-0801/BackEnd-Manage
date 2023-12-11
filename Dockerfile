@@ -35,7 +35,6 @@ WORKDIR  /backend-manage
 
 # Copy the production build files from the builder image to the container
 COPY --from=builder  /backend-manage/dist ./dist
-COPY --from=builder  /backend-manage/env/.env.example .env.dev
 COPY --from=builder  /backend-manage/node_modules ./node_modules
 
 
@@ -51,6 +50,7 @@ ARG DB_USER
 ARG DB_PASSWORD
 ARG DB_ROOT_PASSWORD
 ARG DB_DATABASE
+ARG DB_HOST
 ARG TIMEZONE_NUM
 ARG CLOUD_NAME
 ARG API_KEY
@@ -65,6 +65,7 @@ ENV DB_USER=$DB_USER
 ENV DB_PASSWORD=$DB_PASSWORD
 ENV DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD
 ENV DB_DATABASE=$DB_DATABASE
+ENV DB_HOST=$DB_HOST
 ENV TIMEZONE_NUM=$TIMEZONE_NUM
 ENV CLOUD_NAME=$CLOUD_NAME
 ENV API_KEY=$API_KEY
