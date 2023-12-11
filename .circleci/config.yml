@@ -19,7 +19,7 @@ jobs:
       - run:
           command: |
             touch /home/circleci/backend-manage/.env
-            ls home/circleci/backend-manage/
+            ls
           name: Show file 1 
       # - run:
       #     command: yarn build
