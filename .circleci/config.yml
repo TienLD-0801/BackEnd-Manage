@@ -25,30 +25,12 @@ jobs:
           command: | 
             cp env/.env.example .env.dev 
             yarn run docker-dev-up -d
-      - docker/check:
-          docker-username: DOCKER_USER
-          docker-password: DOCKER_PASSWORD
-      - docker/build:
-          image: $DOCKER_IMAGE_NEST
-          tag: $DOCKER_TAG
-      - docker/build:
-          image: $DOCKER_IMAGE_MYSQL
-          tag: $DOCKER_TAG    
-      - docker/build:
-          image: $DOCKER_IMAGE_REDIS
-          tag: $DOCKER_TAG        
-      - docker/push:
-          digest-path: /tmp/digest.txt
-          image: $DOCKER_IMAGE_NEST
-          tag: $DOCKER_TAG
-      - docker/push:
-          digest-path: /tmp/digest.txt
-          image: $DOCKER_IMAGE_MYSQL
-          tag: $DOCKER_TAG  
-      - docker/push:
-          digest-path: /tmp/digest.txt
-          image: $DOCKER_IMAGE_REDIS
-          tag: $DOCKER_TAG      
+      - run: 
+          name : Build APP 
+          command: docker-compose build    
+      - run: 
+          name : Watch docker compose
+          command: docker-compose images  
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"

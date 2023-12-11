@@ -40,8 +40,10 @@ services:
     ports:
       - $APP_PORT:$APP_PORT
     volumes:
-      - .:/backend-manage
-      - '/backend-manage/node_modules'
+      - ./src:/builder/backend-manage/src/
+      - dev_dep:/builder/backend-manage/node_modules
+      - yarn_cache:/usr/local/share/.cache/yarn
+      - prod_dep:/prod_dep/node_modules
     command: npm run start:dev
     networks:
       - nw_template
@@ -52,4 +54,7 @@ networks:
   nw_template:
     driver: bridge
 
-
+volumes:
+  yarn_cache:
+  dev_dep:
+  prod_dep:
