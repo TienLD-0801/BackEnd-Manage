@@ -18,7 +18,7 @@ jobs:
       - run:
           command: yarn build
           name: Build app
-       - run: 
+      - run: 
           command: yarn docker-dev-up -d
           name: Build docker composer      
       - persist_to_workspace:
