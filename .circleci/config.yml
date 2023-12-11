@@ -18,12 +18,15 @@ jobs:
       - run:
           command: yarn build
           name: Build app
-      - run: 
-          command: mkdir .env
+      - run:
+          command: echo "VARIABLE=value" >> .env
           name: Create .env
-      - run: 
+       - run:
           command: ls
-          name: Cat env
+          name: Show file
+      - run:
+          command: cat .env
+          name: Show env
       # - run: 
       #     command: yarn docker-dev-up -d
       #     name: Build docker composer      
