@@ -5,12 +5,13 @@ version: 2.1
 orbs:
   node: circleci/node@5.1.0
   docker: circleci/docker@2.4.0
-jobs:
-  test:
-    executor: node/default
-    working_directory: ~/backend-manage
+jobs:   
+  build-and-push:
+    environment:
+      DOCKER_IMAGE: leduytien0801/backend-manage
+      DOCKER_TAG: latest
+    executor: docker/docker
     steps:
-      - checkout
       - node/install-packages:
           pkg-manager: yarn
       - run:
@@ -19,25 +20,8 @@ jobs:
       - run:
           command: yarn build
           name: Build app demo
-  build-and-push:
-    environment:
-      DOCKER_IMAGE: leduytien0801/backend-manage
-      DOCKER_TAG: latest
-    executor: docker/docker
-    steps:
-      # - run:
-      #     name: Install `docker-compose`
-      #     command: |
-      #       curl -L https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-      #       chmod +x ~/docker-compose
-      #       sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - setup_remote_docker
       - checkout
-      # - run: 
-      #     name : Run docker compose 
-      #     command: |
-      #       cp env/.env.example .env
-      #       docker-compose -f docker-compose.yml up
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
