@@ -33,11 +33,11 @@ jobs:
       #       sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - setup_remote_docker
       - checkout
-      - run: 
-          name : Run docker compose 
-          command: |
-            cp env/.env.example .env
-            docker-compose -f docker-compose.yml up
+      # - run: 
+      #     name : Run docker compose 
+      #     command: |
+      #       cp env/.env.example .env
+      #       docker-compose -f docker-compose.yml up
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
