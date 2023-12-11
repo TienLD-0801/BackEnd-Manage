@@ -24,7 +24,7 @@ jobs:
           name: Build docker compose
           command: | 
             cp env/.env.example .env.dev 
-            yarn run docker-dev-up -d
+            yarn run docker-up
       - run: 
           name : Build APP 
           command: docker-compose build    
