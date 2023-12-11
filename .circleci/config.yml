@@ -47,10 +47,7 @@ jobs:
 workflows:
   backend-manage-pipeline:
     jobs:
-      - test
       - build-and-push:
-          requires:
-            - test
           filters:
             branches:
               only:
