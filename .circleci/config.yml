@@ -49,7 +49,7 @@ jobs:
       - run: 
           name : Build docker composer
           command: |
-            cp env/env.example .env.dev
+            cp env/.env.example .env.dev
             docker-compose up -d     
       - docker/build:
           extra_build_args: 
