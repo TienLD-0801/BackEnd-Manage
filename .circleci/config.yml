@@ -18,7 +18,7 @@ jobs:
           name: Run tests
       - run:
           command: yarn build
-          name: Build app 
+          name: Build app demo
   build-and-push:
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
