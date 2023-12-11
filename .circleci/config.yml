@@ -18,7 +18,7 @@ jobs:
           name: Run tests
       - run:
           command: |
-             cd backend-manage; ls -la; pwd;
+            pwd
           name: Show file    
       # - run:
       #     command: yarn build
