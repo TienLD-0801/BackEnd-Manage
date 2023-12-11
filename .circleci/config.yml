@@ -17,9 +17,8 @@ jobs:
           command: yarn test
           name: Run tests
       - run:
-          command: |
-            ls
-          name: Xem file     
+          command: yarn build
+          name: Build app 
       - run:
           command: |
             printf "\nNODE_ENV=$NODE_ENV" >> env/.env.example;
@@ -41,10 +40,7 @@ jobs:
           working_directory: ./
           command: |
             cp env/.env.example .env.dev
-            yarn run docker-dev-up -d
-      # - run:
-      #     command: yarn build
-      #     name: Build app
+            yarn run docker-dev-up -d    
   build-and-push:
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
