@@ -57,7 +57,7 @@ jobs:
           name: Start all services declared in docker-compose.yml
           command: |
             cp env/.env.example .env.dev
-            yarn run docker-dev-up 
+            docker-compose -f docker-compose.dev.yml up
       - docker/build:
           extra_build_args: 
             '--build-arg NODE_ENV=dev
