@@ -18,13 +18,13 @@ jobs:
       - run:
           command: yarn build
           name: Build app
+       - run: 
+          command: yarn docker-dev-up -d
+          name: Build docker composer      
       - persist_to_workspace:
           root: ~/backend-manage
           paths:
-            - .
-      - run: 
-          command: yarn docker-dev-up -d
-          name: Build docker composer        
+            - .     
   build-and-push:
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
