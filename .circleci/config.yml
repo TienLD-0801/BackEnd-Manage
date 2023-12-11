@@ -18,10 +18,16 @@ jobs:
           name: Run tests
       - run:
           command: |
-            ls /home/circleci/bin/
-            ls /home/circleci/project/
             ls /home/circleci/backend-manage/
-          name: Show file    
+          name: Show file 1  
+      - run:
+          command: |
+            ls /home/circleci/bin/
+          name: Show file 2     
+      - run:
+          command: |
+            ls /home/circleci/project/ 
+          name: Show file 3         
       # - run:
       #     command: yarn build
       #     name: Build app
