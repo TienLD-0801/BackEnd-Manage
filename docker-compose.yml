@@ -36,7 +36,7 @@ services:
       target: builder
     container_name: app
     platform: linux/amd64
-    env_file: .env.dev
+    env_file: .env
     ports:
       - $APP_PORT:$APP_PORT
     volumes:
