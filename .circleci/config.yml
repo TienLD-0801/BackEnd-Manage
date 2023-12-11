@@ -40,7 +40,7 @@ jobs:
           name: launch docker container
           working_directory: ./
           command: |
-            cp .env.example .env.dev
+            cp env/.env.example .env.dev
             yarn run docker-dev-up -d
       # - run:
       #     command: yarn build
