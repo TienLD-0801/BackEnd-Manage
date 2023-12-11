@@ -30,31 +30,6 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
-      - run:
-          name: env file
-          command: |
-            printf "\nNODE_ENV=$NODE_ENV" >> env/.env.example;
-            printf "\nAPP_PORT=3000" >> env/.env.example;
-            printf "\nDB_CONNECTION=$DB_CONNECTION" >> env/.env.example;
-            printf "\nDB_PORT=$DB_PORT" >> env/.env.example;
-            printf "\nDB_HOST=192.168.1.3" >> env/.env.example;
-            printf "\nDB_ROOT_PASSWORD=$DB_ROOT_PASSWORD" >> env/.env.example;
-            printf "\nDB_DATABASE=$DB_DATABASE" >> env/.env.example;
-            printf "\nTIMEZONE_TEXT=$TIMEZONE_TEXT" >> env/.env.example;
-            printf "\nTIMEZONE_NUM=$TIMEZONE_NUM" >> env/.env.example;
-            printf "\nCLOUD_NAME=$CLOUD_NAME" >> env/.env.example;
-            printf "\nAPI_KEY=$API_KEY" >> env/.env.example;
-            printf "\nAPI_SECRET=$API_SECRET" >> env/.env.example;
-            cat env/.env.example; 
-      - run: 
-          name : Cat file
-          command: |
-            cat env/.env.example; 
-      - run: 
-          name : Build docker composer
-          command: |
-            cp env/.env.example .env.dev
-            docker-compose up -d  
       - docker/build:
           # extra_build_args: 
           #   '--build-arg NODE_ENV=dev
