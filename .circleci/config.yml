@@ -7,6 +7,7 @@ orbs:
   docker: circleci/docker@2.4.0
 jobs:
   build-and-push:
+    circleci_ip_ranges: true
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
       DOCKER_TAG: latest
