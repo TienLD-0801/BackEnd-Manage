@@ -35,19 +35,6 @@ jobs:
             printf "\nAPI_SECRET=$API_SECRET" >> env/.env.example;
             cat env/.env.example;
           name: Xem file  
-      - run:
-          name: Download and install docker compose
-          command: |
-            apk update && apk upgrade && apk add curl  
-            curl -L "https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64" -o ~/docker-compose  
-            chmod +x ~/docker-compose  
-            mv ~/docker-compose /usr/local/bin/docker-compose    
-      - run:
-          name: launch docker container
-          working_directory: ./
-          command: |
-            cp env/.env.example .env.dev
-            yarn run docker-dev-up -d    
   build-and-push:
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
@@ -59,11 +46,18 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
-      # - run: 
-      #     command: | 
-      #       cp .env .env.dev
-      #       yarn docker-dev-up -d
-      #     name: Build docker composer       
+      - run:
+          name: Download and install docker compose
+          command: |
+            apk update && apk upgrade && apk add curl  
+            curl -L "https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64" -o ~/docker-compose  
+            chmod +x ~/docker-compose  
+            mv ~/docker-compose /usr/local/bin/docker-compose    
+      - run:
+          name: Start all services declared in docker-compose.yml
+          command: |
+            cp env/.env.example .env.dev
+            yarn run docker-dev-up 
       - docker/build:
           extra_build_args: 
             '--build-arg NODE_ENV=dev
