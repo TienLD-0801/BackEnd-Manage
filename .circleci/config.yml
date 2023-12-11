@@ -46,18 +46,6 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
-      - run:
-          name: Download and install docker compose
-          command: |
-            apk update && apk upgrade && apk add curl  
-            curl -L "https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64" -o ~/docker-compose  
-            chmod +x ~/docker-compose  
-            mv ~/docker-compose /usr/local/bin/docker-compose    
-      - run:
-          name: Start all services declared in docker-compose.yml
-          command: |
-            cp env/.env.example .env.dev
-            docker-compose -f docker-compose.dev.yml up --build
       - docker/build:
           extra_build_args: 
             '--build-arg NODE_ENV=dev
