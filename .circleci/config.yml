@@ -18,7 +18,7 @@ jobs:
           name: Run tests
       - run:
           command: |
-            pwd
+            ls /home/circleci/
           name: Show file    
       # - run:
       #     command: yarn build
