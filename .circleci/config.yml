@@ -19,7 +19,8 @@ jobs:
           command: yarn build
           name: Build app
       - run:
-          command: echo "VARIABLE=value" >> .env
+          command: |
+             cp $BASH_ENV >> .env
           name: Create .env
       - run:
           command: cat .env
@@ -35,11 +36,11 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
-      - run: 
-          command: | 
-            cp .env .env.dev
-            yarn docker-dev-up -d
-          name: Build docker composer       
+      # - run: 
+      #     command: | 
+      #       cp .env .env.dev
+      #       yarn docker-dev-up -d
+      #     name: Build docker composer       
       - docker/build:
           extra_build_args: 
             '--build-arg NODE_ENV=dev
