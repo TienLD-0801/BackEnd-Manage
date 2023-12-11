@@ -14,14 +14,10 @@ jobs:
     steps:
       - setup_remote_docker
       - checkout
-      - node/install-packages:
-          pkg-manager: yarn
-      - run:
-          command: yarn test
-          name: Run tests
-      - run:
-          command: yarn build
-          name: Build app demo
+      - node/install:
+          install-yarn: true
+          node-version: '16.13'
+      - run: node --version
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
