@@ -15,8 +15,10 @@ services:
       TZ: $TIMEZONE_TEXT
     ports:
       - $DB_PORT:$DB_PORT
+    volumes:
+      - ./docker/mysql:/var/lib/mysql  
     expose:
-      - $DB_PORT
+      - $DB_PORT   
     networks:
       - nw_template
   redis:
@@ -25,15 +27,16 @@ services:
     ports:
       - 6379:6379
     networks:
-      - nw_template
+      - nw_template    
   app:
     image: app:latest
     build:
       context: .
-      target: local
+      dockerfile: Dockerfile
+      target: builder
     container_name: app
     platform: linux/amd64
-    env_file: .env
+    env_file: .env.dev
     ports:
       - $APP_PORT:$APP_PORT
     volumes:
@@ -44,8 +47,9 @@ services:
       - nw_template
     depends_on:
       - mysqldb
-      - redis    
+      - redis
 networks:
   nw_template:
     driver: bridge
+
 
