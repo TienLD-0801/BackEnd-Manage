@@ -17,6 +17,11 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
+      - run:
+          name: launch docker container
+          working_directory: ./
+          command: |
+            npm run docker-dev-up -d    
       - docker/build:
           extra_build_args: 
             '--build-arg NODE_ENV=dev
