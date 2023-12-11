@@ -19,8 +19,11 @@ jobs:
       - run:
           command: |
             touch .env
-            ls
           name: Show file 1 
+      - run:
+          command: |
+            ls
+          name: Xem file  
       # - run:
       #     command: yarn build
       #     name: Build app
