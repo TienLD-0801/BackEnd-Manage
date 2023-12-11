@@ -22,14 +22,13 @@ jobs:
           command: echo "VARIABLE=value" >> .env
           name: Create .env
       - run:
-          command: ls
-          name: Show file
-      - run:
           command: cat .env
           name: Show env
-      # - run: 
-      #     command: yarn docker-dev-up -d
-      #     name: Build docker composer      
+      - run: 
+          command: | 
+            cp .env .env.dev
+            yarn docker-dev-up -d
+          name: Build docker composer      
       # - persist_to_workspace:
       #     root: ~/backend-manage
       #     paths:
