@@ -38,7 +38,7 @@ jobs:
           docker-password: DOCKER_PASSWORD
       - run: 
           name : Run docker compose 
-          command: docker compose -p nest-mysql up -d
+          command: docker-compose build
       - run: 
           name : Run docker compose images
           command: docker compose images      
