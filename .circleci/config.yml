@@ -11,7 +11,6 @@ jobs:
       DOCKER_IMAGE_NEST: app
       DOCKER_IMAGE_MYSQL: mysql
       DOCKER_IMAGE_REDIS: redis
-      DOCKER_TAG: latest
     executor: docker/docker
     steps:
       - setup_remote_docker
@@ -25,12 +24,13 @@ jobs:
           command: | 
             cp env/.env.example .env
             yarn run docker-up
+      - docker/check:
+          docker-username: DOCKER_USER
+          docker-password: DOCKER_PASSWORD
       - run: 
-          name : Build APP 
-          command: docker-compose build    
-      - run: 
-          name : Watch docker compose
-          command: docker-compose images  
+          name : Docker push images
+          command: |
+            docker-compose push
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
