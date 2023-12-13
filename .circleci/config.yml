@@ -26,17 +26,17 @@ jobs:
             cp env/.env.example .env
             yarn run docker-up
        # with credentials stored in the UI
-     - run: |
-         echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USER --password-stdin
-         docker run -d --name app leduytien0801/app:latest
-         docker run -d --name redis leduytien0801/redis:latest
-         docker run -d --name mysql leduytien0801/mysql:latest
+      - run: |
+          echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USER --password-stdin
+          docker run -d --name app leduytien0801/app:latest
+          docker run -d --name redis leduytien0801/redis:latest
+          docker run -d --name mysql leduytien0801/mysql:latest
 
      # build the application image
-     - run: |
-        docker build -t leduytien0801/app:latest .
-        docker build -t  leduytien0801/redis:latest . 
-        docker build -t leduytien0801/mysql:latest .
+      - run: |
+          docker build -t leduytien0801/app:latest .
+          docker build -t  leduytien0801/redis:latest . 
+          docker build -t leduytien0801/mysql:latest .
 
      # deploy the image
     #  - run: docker push company/app:$CIRCLE_BRANCH
