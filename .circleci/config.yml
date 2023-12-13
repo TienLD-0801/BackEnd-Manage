@@ -8,10 +8,10 @@ orbs:
 jobs:   
   build-and-push:
     environment:
-      # DOCKER_IMAGE: leduytien0801/backend-manage
-      # DOCKER_TAG_APP: app
-      # DOCKER_TAG_MYSQL: mysql
-      # DOCKER_TAG_REDIS: redis
+      DOCKER_IMAGE: leduytien0801/backend-manage
+      DOCKER_TAG_APP: app
+      DOCKER_TAG_MYSQL: mysql
+      DOCKER_TAG_REDIS: redis
     executor: docker/docker
     steps:
       - setup_remote_docker
