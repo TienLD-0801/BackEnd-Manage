@@ -25,16 +25,13 @@ jobs:
           command: | 
             cp env/.env.example .env
             yarn run docker-up
-      - docker/check:
-          docker-username: DOCKER_USER
-          docker-password: DOCKER_PASSWORD
+      # - docker/check:
+      #     docker-username: DOCKER_USER
+      #     docker-password: DOCKER_PASSWORD
       - run: 
           name : Docker push images
           command: |
             docker images
-            docker push $DOCKER_IMAGE_NEST:$DOCKER_TAG
-            # docker push $DOCKER_IMAGE_MYSQL:$DOCKER_TAG
-            # docker push $DOCKER_IMAGE_REDIS:$DOCKER_TAG
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
