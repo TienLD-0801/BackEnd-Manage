@@ -8,10 +8,10 @@ orbs:
 jobs:   
   build-and-push:
     environment:
-      DOCKER_IMAGE_NEST: app
-      DOCKER_IMAGE_MYSQL: mysql
-      DOCKER_IMAGE_REDIS: redis
-      DOCKER_TAG: latest
+      # DOCKER_IMAGE: leduytien0801/backend-manage
+      # DOCKER_TAG_APP: app
+      # DOCKER_TAG_MYSQL: mysql
+      # DOCKER_TAG_REDIS: redis
     executor: docker/docker
     steps:
       - setup_remote_docker
@@ -25,13 +25,21 @@ jobs:
           command: | 
             cp env/.env.example .env
             yarn run docker-up
-      # - docker/check:
-      #     docker-username: DOCKER_USER
-      #     docker-password: DOCKER_PASSWORD
-      - run: 
-          name : Docker push images
-          command: |
-            docker images
+       # with credentials stored in the UI
+     - run: |
+         echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USER --password-stdin
+         docker run -d --name app leduytien0801/app:latest
+         docker run -d --name redis leduytien0801/redis:latest
+         docker run -d --name mysql leduytien0801/mysql:latest
+
+     # build the application image
+     - run: |
+        docker build -t leduytien0801/app:latest .
+        docker build -t  leduytien0801/redis:latest . 
+        docker build -t leduytien0801/mysql:latest .
+
+     # deploy the image
+    #  - run: docker push company/app:$CIRCLE_BRANCH
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
