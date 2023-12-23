@@ -8,7 +8,7 @@ orbs:
 jobs:   
   build-and-push:
     environment:
-      DOCKER_IMAGE: leduytien0801/frontend-manage
+      DOCKER_IMAGE: leduytien0801/backend-manage
       DOCKER_TAG: latest
     executor: docker/docker
     steps:
