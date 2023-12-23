@@ -20,13 +20,13 @@ jobs:
     - store_test_results:
         path: /tmp/test-results
 workflows:
-  node-tests:
+  build-and-deploy:
     jobs:
     - test
     # Envs: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_ECR_ACCOUNT_URL
-    - aws-ecr/build-and-push-image:
+    - aws-ecr/build_and_push_image:
         repo: backend-manage
-        tag: "latest,v0.1.${CIRCLE_BUILD_NUM}"
+        tag: latest
         dockerfile: Dockerfile
         path: .
         requires:
