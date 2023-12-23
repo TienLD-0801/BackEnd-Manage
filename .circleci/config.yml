@@ -21,7 +21,7 @@ workflows:
        - aws-ecr/build_and_push_image:
           auth:
             - aws-cli/setup:
-                role_arn: arn:aws:iam::556267189010
+                role_arn: arn:aws:iam::556267189010:user/tienld-aws-0801
           repo: backend-manage
           tag: latest
           dockerfile: Dockerfile
