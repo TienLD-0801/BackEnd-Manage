@@ -7,8 +7,6 @@ jobs:
   test:
     executor: node/default
     steps:
-    - checkout
-    steps:
       - checkout
       - run: sudo npm install -g npm@latest
       - node/install-packages:
