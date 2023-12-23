@@ -11,10 +11,8 @@ jobs:
       - run: sudo npm install -g npm@latest
       - node/install-packages:
           cache-path: ~/project/node_modules
-          override-ci-command: npm install    
+          override-ci-command: npm install
       - run: npm run test
-      - node/run:
-          npm-run: build
 workflows:
   build_and_deploy:
     jobs:
