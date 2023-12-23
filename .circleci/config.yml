@@ -6,7 +6,7 @@ jobs:
   test:
     executor:
       name: node/default
-      tag: 18
+      tag: "18"
     steps:
     - checkout
     - node/install-packages:
