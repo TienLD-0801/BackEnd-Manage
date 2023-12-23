@@ -42,38 +42,6 @@ COPY --from=builder  /backend-manage/node_modules ./node_modules
 COPY package*.json ./
 COPY tsconfig.json ./
 
-# # ENV VARIABLE
-# ARG NODE_ENV
-# ARG APP_PORT
-# ARG DB_CONNECTION
-# ARG DB_PORT
-# ARG DB_USER
-# ARG DB_PASSWORD
-# ARG DB_ROOT_PASSWORD
-# ARG DB_DATABASE
-# ARG DB_HOST
-# ARG TIMEZONE_NUM
-# ARG CLOUD_NAME
-# ARG API_KEY
-# ARG API_SECRET
-
-# # USE ENV
-# ENV NODE_ENV=$NODE_ENV
-# ENV APP_PORT=$APP_PORT
-# ENV DB_CONNECTION=$DB_CONNECTION
-# ENV DB_PORT=$DB_PORT
-# ENV DB_USER=$DB_USER
-# ENV DB_PASSWORD=$DB_PASSWORD
-# ENV DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD
-# ENV DB_DATABASE=$DB_DATABASE
-# ENV DB_HOST=$DB_HOST
-# ENV TIMEZONE_NUM=$TIMEZONE_NUM
-# ENV CLOUD_NAME=$CLOUD_NAME
-# ENV API_KEY=$API_KEY
-# ENV API_SECRET=$API_SECRET
-
-
-# Expose port 3000 for the NestJS application
 EXPOSE 3000
 
 VOLUME [ "/backend-manage/node_modules" ]
@@ -81,8 +49,4 @@ VOLUME [ "/backend-manage/node_modules" ]
 # Start the NestJS application
 CMD ["npm", "run", "start:prod"]
 
-### build source BE docker images
-# docker build --tag backend-source-1.0.0 .
 
-### start container images 
-# docker run -p 8080:8080 -d backend-source-1.0.0

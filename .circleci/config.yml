@@ -1,46 +1,33 @@
-# circleci config
-# version
 version: 2.1
-# orbs
 orbs:
-  node: circleci/node@5.1.0
-  docker: circleci/docker@2.4.0
-jobs:   
-  build-and-push:
-    environment:
-      DOCKER_IMAGE: leduytien0801/backend-manage
-      DOCKER_TAG: latest
-    executor: docker/docker
+  node: circleci/node@5.1.1
+  aws-ecr: circleci/aws-ecr@9.0.1
+jobs:
+  test:
+    executor:
+      name: node/default
+      tag: 18
     steps:
-      - setup_remote_docker
-      - checkout
-      - docker/check:
-          docker-username: DOCKER_USER
-          docker-password: DOCKER_PASSWORD
-      - docker/build:
-          image: $DOCKER_IMAGE
-          tag:  $DOCKER_TAG
-      - docker/push:
-          digest-path: /tmp/digest.txt
-          image: $DOCKER_IMAGE
-          tag:  $DOCKER_TAG
-      - run:
-          command: |
-            echo "Digest is: $(</tmp/digest.txt)"
-  deploy:
-    executor: docker/docker
-    steps:
-      # Please add $SSH_KEY_FINGERPRINT, $DEPLOYED_USER@ and DEPLOYED_SERVER to project's environment
-      - add_ssh_keys:
-          fingerprints:
-            - $SSH_KEY_FINGERPRINT
-      - run: ssh -oStrictHostKeyChecking=no $DEPLOYED_USER@$DEPLOYED_SERVER './deploy.sh'
-# test node pending
+    - checkout
+    - node/install-packages:
+        pkg-manager: npm
+    - run:
+        command: npm test
+        name: Run test source
+    - store_artifacts:
+        path: /tmp/test-results
+        destination: raw-test-output
+    - store_test_results:
+        path: /tmp/test-results
 workflows:
-  backend-manage-pipeline:
+  node-tests:
     jobs:
-      - build-and-push:
-          filters:
-            branches:
-              only:
-                - deployment-circleci
+    - test
+    # Envs: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_ECR_ACCOUNT_URL
+    - aws-ecr/build-and-push-image:
+        repo: backend-manage
+        tag: "latest,v0.1.${CIRCLE_BUILD_NUM}"
+        dockerfile: Dockerfile
+        path: .
+        requires:
+          - test
