@@ -5,21 +5,18 @@ orbs:
   aws-ecr: circleci/aws-ecr@9.0.1
 jobs:
   test:
-    executor:
-      name: node/default
-      tag: "18"
+    executor: node/default
     steps:
     - checkout
-    - node/install-packages:
-        pkg-manager: npm
-    - run:
-        command: npm test
-        name: Run test source
-    - store_artifacts:
-        path: /tmp/test-results
-        destination: raw-test-output
-    - store_test_results:
-        path: /tmp/test-results
+    steps:
+      - checkout
+      - run: sudo npm install -g npm@latest
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: npm install    
+      - run: npm run test
+      - node/run:
+          npm-run: build
 workflows:
   build_and_deploy:
     jobs:
