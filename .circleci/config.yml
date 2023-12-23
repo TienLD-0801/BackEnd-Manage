@@ -25,6 +25,9 @@ workflows:
        - test
       # Envs: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_ECR_ACCOUNT_URL
        - aws-ecr/build_and_push_image:
+          auth:
+            - aws-cli/setup:
+                role_arn: arn:aws:iam::556267189010
           repo: backend-manage
           tag: latest
           dockerfile: Dockerfile
