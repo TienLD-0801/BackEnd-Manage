@@ -20,7 +20,7 @@ jobs:
     - store_test_results:
         path: /tmp/test-results
 workflows:
-  build-and-deploy:
+  node-tests:
     jobs:
        - test
       # Envs: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_ECR_ACCOUNT_URL
