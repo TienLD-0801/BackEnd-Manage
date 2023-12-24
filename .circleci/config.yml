@@ -20,8 +20,8 @@ workflows:
       # Envs: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_ECR_ACCOUNT_URL
        - aws-ecr/build_and_push_image:
           auth:
-            - aws-cli/setup:
-                role_arn: arn:aws:iam::556267189010:user/tienld-aws-0801
+          - aws-cli/setup:
+              role_arn: arn:aws:iam::556267189010:role/github-access
           repo: backend-manage
           tag: latest
           dockerfile: Dockerfile
