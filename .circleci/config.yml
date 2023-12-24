@@ -21,7 +21,7 @@ workflows:
        - aws-ecr/build_and_push_image:
           auth:
           - aws-cli/setup:
-              role_arn: arn:aws:iam::556267189010:role/github-access
+              role_arn: arn:aws:iam::556267189010:role/CIRCLECI-ROLE
           repo: backend-manage
           tag: latest
           dockerfile: Dockerfile
