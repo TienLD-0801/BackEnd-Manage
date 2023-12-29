@@ -9,6 +9,7 @@ jobs:
       - image: node:latest
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Installing yarn
           command: yarn
