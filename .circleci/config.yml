@@ -9,7 +9,6 @@ jobs:
       - image: node:latest
     steps:
       - checkout
-      - setup_remote_docker
       - run:
           name: Installing yarn
           command: yarn
@@ -26,6 +25,7 @@ jobs:
   deploy_ecr:
     executor: aws-cli/default
     steps:
+      - setup_remote_docker
       - attach_workspace:
           at: .
       - aws-cli/setup:
