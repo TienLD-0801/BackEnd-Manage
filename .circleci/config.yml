@@ -29,12 +29,12 @@ jobs:
           at: .
       - aws-cli/setup:
           profile_name: default
-      # - run:
-      #     name: Upload file to S3
-      #     command: |
-      #       aws s3 rm s3://frontend-manage --recursive
-      #       aws s3 rm s3://frontend-manage/assets --recursive
-      #       aws s3 sync ./dist/ s3://frontend-manage
+      - run:
+          name: Set up aws cli
+          command : aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 556267189010.dkr.ecr.ap-southeast-1.amazonaws.com
+      - run: 
+          name: Build docker 
+          command : docker build -t backend-manage .  
 workflows:
   backend-manage-pipeline:
     jobs:

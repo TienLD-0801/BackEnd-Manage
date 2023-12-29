@@ -47,6 +47,6 @@ EXPOSE 3000
 VOLUME [ "/backend-manage/node_modules" ]
 
 # Start the NestJS application
-CMD ["npm", "run", "start:prod"]
+CMD ["yarn", "start:prod"]
 
 
