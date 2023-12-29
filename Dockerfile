@@ -15,8 +15,7 @@ COPY --chown=node:node tsconfig.json ./
 COPY --chown=node:node . .
 
 # Install the dependencies
-RUN yarn
-
+RUN yarn install --frozen-lockfile
 
 # Copy the rest of the application code to the container
 COPY . .
@@ -25,7 +24,7 @@ COPY . .
 RUN yarn build
 
 # Use a lightweight Node.js 18 image as the base image
-FROM node:18.16-alpine
+FROM node:18.16-alpine as production
 
 ENV TZ=Asia/Ho_Chi_Minh
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ /etc/timezone
