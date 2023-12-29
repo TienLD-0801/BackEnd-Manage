@@ -40,7 +40,7 @@ jobs:
              docker tag backend-manage:latest 556267189010.dkr.ecr.ap-southeast-1.amazonaws.com/backend-manage:latest
              docker push 556267189010.dkr.ecr.ap-southeast-1.amazonaws.com/backend-manage:latest
       - run:
-          command: echo "Deploy erc successfully" 
+          command: echo "Deploy ecr successfully" 
 workflows:
   backend-manage-pipeline:
     jobs:
