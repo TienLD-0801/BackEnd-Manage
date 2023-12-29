@@ -31,11 +31,17 @@ jobs:
       - aws-cli/setup:
           profile_name: default
       - run:
-          name: Set up aws cli
+          name: Login aws
           command : aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 556267189010.dkr.ecr.ap-southeast-1.amazonaws.com
       - run: 
           name: Build docker 
           command : docker build -t backend-manage .  
+      - run:
+          name: Add tag docker
+          command: docker tag backend-manage:latest 556267189010.dkr.ecr.ap-southeast-1.amazonaws.com/backend-manage:latest
+      - run:
+          name: Push docker ecr   
+          command: docker push 556267189010.dkr.ecr.ap-southeast-1.amazonaws.com/backend-manage:latest
 workflows:
   backend-manage-pipeline:
     jobs:
