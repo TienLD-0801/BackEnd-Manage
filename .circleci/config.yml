@@ -2,7 +2,6 @@ version: 2.1
 orbs:
   node: circleci/node@5.1.1
   aws-cli: circleci/aws-cli@4.1.2
-  aws-ecr: circleci/aws-ecr@9.0.1
 jobs:
   test:
     executor: node/default
@@ -13,19 +12,55 @@ jobs:
           cache-path: ~/project/node_modules
           override-ci-command: npm install
       - run: npm run test
+  build_project:
+    working_directory: ~/backend-manage
+    docker:
+      - image: node:latest
+    steps:
+      - checkout
+      - run:
+          name: Installing yarn
+          command: yarn
+      - run:
+          name: Build source
+          command: yarn build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  deploy_ecr:
+    executor: aws-cli/default
+    steps:
+      - attach_workspace:
+          at: .
+      - aws-cli/setup:
+          profile_name: default
+      # - run:
+      #     name: Upload file to S3
+      #     command: |
+      #       aws s3 rm s3://frontend-manage --recursive
+      #       aws s3 rm s3://frontend-manage/assets --recursive
+      #       aws s3 sync ./dist/ s3://frontend-manage
 workflows:
-  build_and_deploy:
+  backend-manage-pipeline:
     jobs:
-       - test
-      # Envs: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_ECR_ACCOUNT_URL
-       - aws-ecr/build_and_push_image:
-          auth:
-            - aws-cli/setup:
-                profile_name: default
-                role_arn: arn:aws:iam::556267189010:role/circleci-oidc
-          repo: backend-manage
-          tag: latest
-          dockerfile: Dockerfile
-          path: .
+      - test: 
+          filters:
+            branches:
+              only:
+                - deployment-circleci
+      - build_project:
           requires:
             - test
+          filters:
+            branches:
+              only:
+                - deployment-circleci
+      - deploy_ecr:
+          context: ecr-context
+          requires:
+            - build_project
+          filters:
+            branches:
+              only:
+                - deployment-circleci
