@@ -1,5 +1,5 @@
 # Use the official Node.js 18 image as the base image
-FROM node:alpine AS builder
+FROM node:18.16-alpine AS builder
 
 
 ENV TZ=Asia/Ho_Chi_Minh
@@ -25,7 +25,7 @@ COPY . .
 RUN yarn build
 
 # Use a lightweight Node.js 18 image as the base image
-FROM node:alpine
+FROM node:18.16-alpine
 
 ENV TZ=Asia/Ho_Chi_Minh
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ /etc/timezone
