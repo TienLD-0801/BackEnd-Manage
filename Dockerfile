@@ -14,7 +14,7 @@ COPY --chown=node:node tsconfig.json ./
 
 COPY --chown=node:node . .
 
-RUN apt-get --assume-yes install yarn && apt-mark hold yarn  
+RUN apk update && apk add --no-cache 
 
 # Install the dependencies
 RUN yarn install
