@@ -14,16 +14,14 @@ COPY --chown=node:node tsconfig.json ./
 
 COPY --chown=node:node . .
 
-RUN apk update && apk add --no-cache 
-
 # Install the dependencies
-RUN yarn install
+RUN npm install
 
 # Copy the rest of the application code to the container
 COPY . .
 
 # Build the production version of the application
-RUN yarn build
+RUN npm run build
 
 # Use a lightweight Node.js 18 image as the base image
 FROM node:18.16-alpine as production
@@ -48,6 +46,6 @@ EXPOSE 3000
 VOLUME [ "/backend-manage/node_modules" ]
 
 # Start the NestJS application
-CMD ["yarn", "start:prod"]
+CMD ["npm","run" , "start:prod"]
 
 
