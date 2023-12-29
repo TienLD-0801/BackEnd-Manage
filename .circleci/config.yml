@@ -3,15 +3,6 @@ orbs:
   node: circleci/node@5.1.1
   aws-cli: circleci/aws-cli@4.1.2
 jobs:
-  test:
-    executor: node/default
-    steps:
-      - checkout
-      - run: sudo npm install -g npm@latest
-      - node/install-packages:
-          cache-path: ~/project/node_modules
-          override-ci-command: npm install
-      - run: npm run test
   build_project:
     working_directory: ~/backend-manage
     docker:
@@ -24,6 +15,9 @@ jobs:
       - run:
           name: Build source
           command: yarn build
+      - run:
+          name: Test source
+          command: yarn test    
       - persist_to_workspace:
           root: .
           paths:
@@ -44,14 +38,7 @@ jobs:
 workflows:
   backend-manage-pipeline:
     jobs:
-      - test: 
-          filters:
-            branches:
-              only:
-                - deployment-circleci
       - build_project:
-          requires:
-            - test
           filters:
             branches:
               only:
