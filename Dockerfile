@@ -14,8 +14,10 @@ COPY --chown=node:node tsconfig.json ./
 
 COPY --chown=node:node . .
 
+RUN apt-get --assume-yes install yarn && apt-mark hold yarn  
+
 # Install the dependencies
-RUN yarn install --frozen-lockfile
+RUN yarn install
 
 # Copy the rest of the application code to the container
 COPY . .
