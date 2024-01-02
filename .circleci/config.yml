@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@5.1.1
-  aws-cli: circleci/aws-cli@4.1.2
+  docker: circleci/docker@2.4.0
 jobs:
   build_project:
     working_directory: ~/backend-manage
@@ -13,32 +13,43 @@ jobs:
           name: Installing yarn
           command: yarn
       - run:
+          name: Config environment variable
+          command: |
+             echo "NODE_ENV=$NODE_ENV" >>.env
+             echo "APP_PORT=$APP_PORT" >>.env  
+             echo "DB_PORT=$DB_PORT" >>.env
+             echo "DB_USER=$DB_USER" >>.env
+             echo "DB_PASSWORD=$DB_PASSWORD" >>.env
+             echo "DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD" >>.env
+             echo "DB_DATABASE=$DB_DATABASE" >>.env
+             echo "DB_HOST=$DB_HOST" >>.env
+             echo "DB_HOST=$DB_HOST" >>.env
+             echo "TIMEZONE_TEXT=$TIMEZONE_TEXT" >>.env
+             echo "TIMEZONE_NUM=$TIMEZONE_NUM" >>.env
+             echo "CLOUD_NAME=$CLOUD_NAME" >>.env
+             echo "API_KEY=$API_KEY" >>.env
+             echo "API_SECRET=$API_SECRET" >>.env     
+      - run:
           name: Build source
-          command: yarn build
+          command: yarn build  
       - run:
           name: Test source
-          command: yarn test    
+          command: yarn test      
       - persist_to_workspace:
           root: .
           paths:
             - .
-  deploy_ecr:
-    executor: aws-cli/default
+  deploy_docker_hub:
+    executor: docker/docker
     steps:
       - setup_remote_docker
+      - checkout
+      - docker/check
       - attach_workspace:
           at: .
-      - aws-cli/setup:
-          profile_name: default
-      - run:
-          name: Login aws
-          command : aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 556267189010.dkr.ecr.ap-southeast-1.amazonaws.com
-      - run: 
-          name: Build docker and push ecr
-          command : |
-             docker build -t backend-manage .  
-             docker tag backend-manage:latest 556267189010.dkr.ecr.ap-southeast-1.amazonaws.com/backend-manage:latest
-             docker push 556267189010.dkr.ecr.ap-southeast-1.amazonaws.com/backend-manage:latest
+      # - run:
+      #    name: Login docker
+      #    command: echo "Deploy ecr successfully"     
       - run:
           command: echo "Deploy ecr successfully" 
 workflows:
@@ -49,8 +60,8 @@ workflows:
             branches:
               only:
                 - deployment-circleci
-      - deploy_ecr:
-          context: ecr-context
+      - deploy_docker_hub:
+          context: backend-env
           requires:
             - build_project
           filters:
