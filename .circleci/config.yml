@@ -11,23 +11,7 @@ jobs:
       - checkout
       - run:
           name: Installing yarn
-          command: yarn
-      - run:
-          name: Config environment variable
-          command: |
-             echo "NODE_ENV=$NODE_ENV" >>.env
-             echo "APP_PORT=$APP_PORT" >>.env  
-             echo "DB_PORT=$DB_PORT" >>.env
-             echo "DB_USER=$DB_USER" >>.env
-             echo "DB_PASSWORD=$DB_PASSWORD" >>.env
-             echo "DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD" >>.env
-             echo "DB_DATABASE=$DB_DATABASE" >>.env
-             echo "DB_HOST=$DB_HOST" >>.env
-             echo "TIMEZONE_TEXT=$TIMEZONE_TEXT" >>.env
-             echo "TIMEZONE_NUM=$TIMEZONE_NUM" >>.env
-             echo "CLOUD_NAME=$CLOUD_NAME" >>.env
-             echo "API_KEY=$API_KEY" >>.env
-             echo "API_SECRET=$API_SECRET" >>.env     
+          command: yarn  
       - run:
           name: Build source
           command: yarn build  
@@ -50,6 +34,23 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
+      - run
+          name: Config environment variable
+          command: |
+             cd backend-manage/
+             echo "NODE_ENV=$NODE_ENV" >>.env
+             echo "APP_PORT=$APP_PORT" >>.env  
+             echo "DB_PORT=$DB_PORT" >>.env
+             echo "DB_USER=$DB_USER" >>.env
+             echo "DB_PASSWORD=$DB_PASSWORD" >>.env
+             echo "DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD" >>.env
+             echo "DB_DATABASE=$DB_DATABASE" >>.env
+             echo "DB_HOST=$DB_HOST" >>.env
+             echo "TIMEZONE_TEXT=$TIMEZONE_TEXT" >>.env
+             echo "TIMEZONE_NUM=$TIMEZONE_NUM" >>.env
+             echo "CLOUD_NAME=$CLOUD_NAME" >>.env
+             echo "API_KEY=$API_KEY" >>.env
+             echo "API_SECRET=$API_SECRET" >>.env       
       - docker/build:
           image: $DOCKER_IMAGE
           tag: $DOCKER_TAG
