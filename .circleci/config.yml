@@ -45,8 +45,8 @@ jobs:
       DOCKER_TAG: latest
     executor: docker/docker
     steps:
-      - setup_remote_docker
       - checkout
+      - setup_remote_docker
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
