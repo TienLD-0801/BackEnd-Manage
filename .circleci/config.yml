@@ -35,9 +35,7 @@ jobs:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
       - run:
-          name: Config environment variable
           command: |
-             cd backend-manage/
              echo "NODE_ENV=$NODE_ENV" >>.env
              echo "APP_PORT=$APP_PORT" >>.env  
              echo "DB_PORT=$DB_PORT" >>.env
