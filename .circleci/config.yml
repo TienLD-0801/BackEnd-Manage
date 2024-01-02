@@ -23,7 +23,6 @@ jobs:
              echo "DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD" >>.env
              echo "DB_DATABASE=$DB_DATABASE" >>.env
              echo "DB_HOST=$DB_HOST" >>.env
-             echo "DB_HOST=$DB_HOST" >>.env
              echo "TIMEZONE_TEXT=$TIMEZONE_TEXT" >>.env
              echo "TIMEZONE_NUM=$TIMEZONE_NUM" >>.env
              echo "CLOUD_NAME=$CLOUD_NAME" >>.env
@@ -40,6 +39,7 @@ jobs:
           paths:
             - .
   deploy_docker_hub:
+    working_directory: ~/backend-manage
     environment:
       DOCKER_IMAGE: leduytien0801/backend-manage
       DOCKER_TAG: latest
