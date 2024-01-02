@@ -34,7 +34,7 @@ jobs:
       - docker/check:
           docker-username: DOCKER_USER
           docker-password: DOCKER_PASSWORD
-      - run
+      - run:
           name: Config environment variable
           command: |
              cd backend-manage/
