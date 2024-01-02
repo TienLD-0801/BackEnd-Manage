@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class GlobalService {
   public healthCheck() {
     return {
-      server: 'ok',
+      server: 'ok start',
     };
   }
 }

@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 
-export class OrderCutDto {
+export class OrderDto {
   @IsNotEmpty()
   @MinLength(1)
   @MaxLength(50)

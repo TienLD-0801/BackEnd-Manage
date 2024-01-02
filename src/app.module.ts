@@ -2,7 +2,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { UserModule } from './modules/auth/user.module';
 import { ProductModule } from './modules/products/product.module';
-import { OrderModule } from './modules/orderCut/order.module';
+import { OrderModule } from './modules/orders/order.module';
 import { CategoryModule } from './modules/categories/category.module';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { Module } from '@nestjs/common';

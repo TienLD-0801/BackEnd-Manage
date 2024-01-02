@@ -1,7 +1,7 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('order')
-export class OrderCutEntity extends BaseEntity {
+export class OrderEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

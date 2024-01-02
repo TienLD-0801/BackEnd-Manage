@@ -5,7 +5,7 @@ import { UploadService } from './upload.service';
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
-  @Post()
+  @Post('')
   @HttpCode(HttpStatus.OK)
   uploadImage(@Body() fileImage: Express.Multer.File) {
     return this.uploadService.uploadImage(fileImage);

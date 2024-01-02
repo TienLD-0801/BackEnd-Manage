@@ -10,14 +10,17 @@ import {
 import { OrderService } from './order.service';
 import { HttpMessage } from '../../global/globalEnum';
 import { OrderModel } from '../../models/order.model';
-import { OrderCutDto } from './dto/orderCut.dto';
+import { OrderDto } from './dto/order.dto';
 import { ResponseData } from '../../global/globalClass';
+import { ApiTags } from '@nestjs/swagger';
+import { API_TAG } from '../../shared/constants/constants';
 
-@Controller('order')
+@ApiTags(API_TAG.order)
+@Controller()
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
-  @Get()
+  @Get('api/orders')
   @HttpCode(HttpStatus.OK)
   async getAllOrder(): Promise<ResponseData<OrderModel>> {
     try {
@@ -37,10 +40,10 @@ export class OrderController {
     }
   }
 
-  @Post('create')
+  @Post('api/create-order')
   @HttpCode(HttpStatus.OK)
   async CreateOrder(
-    @Body(new ValidationPipe()) orderCreate: OrderCutDto,
+    @Body(new ValidationPipe()) orderCreate: OrderDto,
   ): Promise<ResponseData<OrderModel>> {
     try {
       return new ResponseData<OrderModel>(

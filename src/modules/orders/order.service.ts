@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as nodemailer from 'nodemailer';
-import { OrderCutDto } from './dto/orderCut.dto';
-import { OrderCutEntity } from '../../entities/orderCut.entity';
+import { OrderDto } from './dto/order.dto';
+import { OrderEntity } from '../../entities/order.entity';
 
 @Injectable()
 export class OrderService {
   private transporter: nodemailer.Transporter;
   constructor(
-    @InjectRepository(OrderCutEntity)
-    private readonly orderRepository: Repository<OrderCutEntity>,
+    @InjectRepository(OrderEntity)
+    private readonly orderRepository: Repository<OrderEntity>,
   ) {
     //khoi tao transporter
     this.transporter = nodemailer.createTransport({
@@ -40,7 +40,7 @@ export class OrderService {
     }
   }
 
-  async createOrder(data: OrderCutDto): Promise<OrderCutEntity> {
+  async createOrder(data: OrderDto): Promise<OrderEntity> {
     const currentDate = new Date();
     const requestDate = new Date(data.dateSchedule);
     const ExitDuplicateOrder = await this.checkDuplicateDate(requestDate);
@@ -61,7 +61,7 @@ export class OrderService {
     }
   }
 
-  async sendMail(data: OrderCutDto): Promise<void> {
+  async sendMail(data: OrderDto): Promise<void> {
     try {
       await this.transporter.sendMail({
         to: `${data.email}`,
