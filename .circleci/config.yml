@@ -3,25 +3,6 @@ orbs:
   node: circleci/node@5.1.1
   docker: circleci/docker@2.4.0
 jobs:
-  build_project:
-    working_directory: ~/backend-manage
-    docker:
-      - image: node:latest
-    steps:
-      - checkout
-      - run:
-          name: Installing yarn
-          command: yarn  
-      - run:
-          name: Build source
-          command: yarn build  
-      - run:
-          name: Test source
-          command: yarn test      
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
   deploy_docker_hub:
     working_directory: ~/backend-manage
     environment:
@@ -61,15 +42,8 @@ jobs:
 workflows:
   backend-manage-pipeline:
     jobs:
-      - build_project:
-          filters:
-            branches:
-              only:
-                - deployment-circleci
       - deploy_docker_hub:
           context: backend-env
-          requires:
-            - build_project
           filters:
             branches:
               only:

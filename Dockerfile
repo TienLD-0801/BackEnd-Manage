@@ -34,7 +34,7 @@ WORKDIR  /backend-manage
 
 # Copy the production build files from the builder image to the container
 COPY --from=builder  /backend-manage/dist ./dist
-COPY --from=builder  /backend-manage/.env/ ./env
+COPY --from=builder  /backend-manage/.env/ ./.env
 COPY --from=builder  /backend-manage/node_modules ./node_modules
 
 
