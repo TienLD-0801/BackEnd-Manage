@@ -22,11 +22,11 @@ async function bootstrap() {
     return numbers[5];
   }
 
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < 100; i++) {
     const user = {
       name: `user${generateRandomNumberNotDuplicate()}`,
       email: `user${generateRandomNumberNotDuplicate()}@example.com`,
-      password: '123456789',
+      password: '12345678',
       date_of_birth: '2000-01-08',
       card_id: `231${generateRandomNumberNotDuplicate()}`,
       phone: `0329${generateRandomNumberNotDuplicate()}`,

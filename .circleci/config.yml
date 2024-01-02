@@ -22,7 +22,6 @@ jobs:
              echo "DB_PORT=$DB_PORT" >>.env
              echo "DB_USER=$DB_USER" >>.env
              echo "DB_PASSWORD=$DB_PASSWORD" >>.env
-             echo "DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD" >>.env
              echo "DB_DATABASE=$DB_DATABASE" >>.env
              echo "DB_HOST=$DB_HOST" >>.env
              echo "TIMEZONE_TEXT=$TIMEZONE_TEXT" >>.env
