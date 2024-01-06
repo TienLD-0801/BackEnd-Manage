@@ -22,7 +22,7 @@ async function bootstrap() {
     return numbers[5];
   }
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 5; i++) {
     const user = {
       name: `user${generateRandomNumberNotDuplicate()}`,
       email: `user${generateRandomNumberNotDuplicate()}@example.com`,

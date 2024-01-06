@@ -11,8 +11,6 @@ import {
   Query,
   Res,
   UseGuards,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { UserService } from './user.service';
@@ -44,7 +42,6 @@ export class AuthController {
   @Post('api/login')
   @HttpCode(HttpStatus.OK)
   @UseGuards(LoginGuard)
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiBody({ type: LoginDto })
   @ApiResponse({ status: 200, description: 'OK' })
   @ApiResponse({ status: 404, description: 'Bad request' })
@@ -72,7 +69,6 @@ export class AuthController {
   @Post('api/create-user')
   @HttpCode(HttpStatus.OK)
   @UseGuards(RegisterGuard)
-  @UsePipes(new ValidationPipe({ transform: true }))
   @ApiResponse({ status: 200, description: 'OK' })
   @ApiResponse({ status: 404, description: 'Bad request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
@@ -95,7 +91,7 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   updateUser(
     @Param('id') id: number,
-    @Body(new ValidationPipe()) params: UserDto,
+    @Body() params: UserDto,
   ): Promise<UpdateUser> {
     return this.userService.updateUser(id, params);
   }

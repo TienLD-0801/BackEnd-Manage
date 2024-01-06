@@ -5,7 +5,6 @@ import {
   Post,
   Body,
   Put,
-  ValidationPipe,
   Delete,
   HttpCode,
   HttpStatus,
@@ -37,9 +36,7 @@ export class CategoryController {
 
   @Post('api/create-category')
   @HttpCode(HttpStatus.OK)
-  createCategory(
-    @Body(new ValidationPipe()) params: CategoryDto,
-  ): Promise<CreateCategoryResponse> {
+  createCategory(@Body() params: CategoryDto): Promise<CreateCategoryResponse> {
     return this.categoryService.createCategory(params);
   }
 
@@ -47,7 +44,7 @@ export class CategoryController {
   @HttpCode(HttpStatus.OK)
   updateCategory(
     @Param('id') id: number,
-    @Body(new ValidationPipe()) params: CategoryDto,
+    @Body() params: CategoryDto,
   ): Promise<any> {
     return this.categoryService.updateCategory(id, params);
   }

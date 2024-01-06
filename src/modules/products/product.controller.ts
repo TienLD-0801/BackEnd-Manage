@@ -12,7 +12,6 @@ import {
   Query,
   UploadedFile,
   UseInterceptors,
-  ValidationPipe,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto } from '../../modules/products/dto/product.dto';
@@ -62,7 +61,7 @@ export class ProductController {
   )
   createProduct(
     @UploadedFile() fileImage: Express.Multer.File,
-    @Body(new ValidationPipe()) params: ProductDto,
+    @Body() params: ProductDto,
   ): Promise<CreateProductResponse> {
     return this.productService.createProduct(params, fileImage);
   }
@@ -71,7 +70,7 @@ export class ProductController {
   @HttpCode(HttpStatus.OK)
   updateProduct(
     @Param('id') id: number,
-    @Body(new ValidationPipe()) params: ProductDto,
+    @Body() params: ProductDto,
   ): Promise<any> {
     return this.productService.updateProduct(id, params);
   }

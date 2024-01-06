@@ -2,12 +2,11 @@ version: '3.7'
 
 services:
   mysqldb:
-    image: mysql:8.0
+    image: mysql:latest
     container_name: database_mysql
     platform: linux/amd64
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
     environment:
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
       MYSQL_DATABASE: $DB_DATABASE
       MYSQL_USER: $DB_USER
       MYSQL_PASSWORD: $DB_PASSWORD
@@ -28,7 +27,7 @@ services:
     networks:
       - nw_template    
   app:
-    image: app:latest
+    image: leduytien0801/app:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -52,7 +51,6 @@ services:
 networks:
   nw_template:
     driver: bridge
-
 volumes:
   yarn_cache:
   dev_dep:
